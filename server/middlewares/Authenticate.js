@@ -8,7 +8,7 @@ module.exports.isAuthenticate = (req, res,next) => {
         res.status(401).json({error:true,message:"UnAuthentucate user"})
       }
 
-      const decode=jwt.verify(token,process.env,JWT_SECRET);
+      const decode=jwt.verify(token,process.env.JWT_SECRET);
      if(!decode){
          res.status(401).json({error:true,message:"invalid token"})
      }

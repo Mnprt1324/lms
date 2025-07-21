@@ -1,6 +1,7 @@
 const User = require("../models/user.models");
 const bcrypt = require("bcryptjs");
 const { genrateToken } = require("../utils/genrateToken");
+const { deleteMediaFromCloudinary, uploadMedia } = require("../utils/cloudinary");
 
 
 module.exports.registerUser = async (req, res) => {
@@ -49,7 +50,7 @@ module.exports.loginUser = async (req, res) => {
 module.exports.logOutUser = async (req, res) => {
     try {
         res.clearCookie("token");
-        res.status(200).json({error:false,message:"logout successfully"})
+        res.status(200).json({ error: false, message: "logout successfully" })
 
     } catch (error) {
         console.log("error in logOutUser:", error);
@@ -58,16 +59,52 @@ module.exports.logOutUser = async (req, res) => {
 
 }
 
-module.exports.getUserProfile=async(req,res)=>{
- try {
-    const userId=req.user;
-     const user = await User.findById(userId).select("-password");
-      console.log(user)
-       if (!user) {
+module.exports.getUserProfile = async (req, res) => {
+    try {
+        const userId = req.user;
+        const user = await User.findById(userId).select("-password");
+        console.log("getUserProfile", user)
+        if (!user) {
             return res.status(404).json({ message: "profile not found" });
-        }  
-    return res.status(200).json({user,message:"user profile fetch"})
- } catch (error) {
-   c
- }
+        }
+        return res.status(200).json({ user, message: "user profile fetch" })
+    } catch (error) {
+        console.log("error in getUserProfile", error);
+        res.status(500).json({ error: true, message: 'internal server error' });
+    }
+}
+
+module.exports.updateUserProfile = async (req, res) => {
+    try {
+        const userId = req.id;
+        const { name } = req.body;
+        const profilePhoto = req.file;
+
+        const user = User.findById(userId)
+        if (!user) {
+            return res.status(404).json({ message: "user not Found" });
+        }
+        if (user.avatar) {
+            const publicId = user.avatar.split("/").pop().split(".")[0];
+            deleteMediaFromCloudinary(publicId);
+        }
+
+        const cloudResponse = await uploadMedia(profilePhoto.path);
+        const photoUrl = cloudResponse.secure_url;
+        const updateData = {
+            name,
+            avatar: photoUrl,
+        }
+
+        const updatedUser = await findByIdAndUpdate(userId, updateData, { new: true }).select("-Password");
+        return res.status(200).json({
+            error: false,
+            user: updatedUser,
+            message: "Profile updated successfully."
+        })
+
+    } catch (error) {
+        console.log("updateUsereProfile", error);
+        res.status(500).json({ error: true, message: 'internal server error' });
+    }
 }

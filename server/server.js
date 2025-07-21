@@ -2,9 +2,14 @@ const express = require("express");
 const app = express();
 const cors = require('cors')
 const dotenv = require('dotenv');
-const connectToDB = require("./utils/db");
+const connectToDB = require("./utils/db")
+const cookieParser = require('cookie-parser');
+
+
 const userRouter=require("./routers/user.router");
-const cookieParser = require('cookie-parser')
+const courseRouter=require("./routers/course.router");
+
+
 dotenv.config();
 
 
@@ -22,6 +27,7 @@ app.get('/', (req, res) => {
 })
 
 app.use("/user",userRouter);
+app.use("/course",courseRouter);
 
 const port=process.env.PORT||5000;
 app.listen(port, () => {
