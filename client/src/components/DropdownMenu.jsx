@@ -12,10 +12,11 @@ import {
 import { NavLink } from "react-router"
 import { functionToLogout } from "../API/api";
 import {useMutation} from "@tanstack/react-query"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userLoggedOut } from "../features/userSlice";
 
 export const DropdownMenu2 = () => {
+   const {user}=useSelector((state)=>state.auth)
   const dispatch= useDispatch();
   const {mutate}=useMutation({
     mutationFn:functionToLogout,
@@ -36,7 +37,7 @@ export const DropdownMenu2 = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage src={user?.avatar||"https://github.com/shadcn.png"} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -53,7 +54,7 @@ export const DropdownMenu2 = () => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Button>DashBoard</Button>
+           <NavLink to={`/admin`}><Button>DashBoard</Button></NavLink>
           </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

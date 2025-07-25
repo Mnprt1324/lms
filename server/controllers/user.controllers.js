@@ -2,11 +2,22 @@ const User = require("../models/user.models");
 const bcrypt = require("bcryptjs");
 const { genrateToken } = require("../utils/genrateToken");
 const { deleteMediaFromCloudinary, uploadMedia } = require("../utils/cloudinary");
+const { registerSchema, loginSchema } = require("../validation/user.validation");
 
 
 module.exports.registerUser = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+
+        const { error, value } = registerSchema.validate(req.body, {
+            abortEarly: false, // show all errors
+            stripUnknown: true
+        })
+
+        if (error) {
+            const errorMessages = error.details.map((d) => d.message);
+            return res.status(400).json({ errors: errorMessages });
+        }
+        const { name, email, password } = value;
         const user = await User.findOne({ email })
         console.log(user);
         if (user) {
@@ -24,7 +35,15 @@ module.exports.registerUser = async (req, res) => {
 
 module.exports.loginUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+          const {error,value}=loginSchema.validate(req.body,{
+            abortEarly:false,
+            stripUnknown:true
+          })
+         if (error) {
+            const errorMessages = error.details.map((d) => d.message);
+            return res.status(400).json({ errors: errorMessages });
+        }
+        const { email, password } = value;
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({ message: "invalid user or passoword" });
@@ -63,7 +82,6 @@ module.exports.getUserProfile = async (req, res) => {
     try {
         const userId = req.user;
         const user = await User.findById(userId).select("-password");
-        console.log("getUserProfile", user)
         if (!user) {
             return res.status(404).json({ message: "profile not found" });
         }
@@ -76,7 +94,7 @@ module.exports.getUserProfile = async (req, res) => {
 
 module.exports.updateUserProfile = async (req, res) => {
     try {
-        const userId = req.id;
+        const userId = req.user;
         const { name } = req.body;
         const profilePhoto = req.file;
 
@@ -96,7 +114,8 @@ module.exports.updateUserProfile = async (req, res) => {
             avatar: photoUrl,
         }
 
-        const updatedUser = await findByIdAndUpdate(userId, updateData, { new: true }).select("-Password");
+        const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true }).select("-Password");
+        
         return res.status(200).json({
             error: false,
             user: updatedUser,

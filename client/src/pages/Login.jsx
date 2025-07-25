@@ -32,7 +32,7 @@ import { loginSchema, signupSchema } from "../validation/userValidation"
 import { toast } from "sonner"
 import { useDispatch } from "react-redux"
 import { userLoggedIn } from "../features/userSlice"
-import {useNavigate} from "react-router-dom"
+import {data, useNavigate} from "react-router-dom"
 export function Login() {
 
   const navigate=useNavigate()
@@ -56,7 +56,7 @@ export function Login() {
 
   const onLoginSubmit =async (data) => {
     loginMutation.mutate(data);
-    navigate("/")
+  
   }
 
   const onSignupSubmit = async(data) => {
@@ -67,13 +67,15 @@ export function Login() {
   mutationFn:functionToLogin,
   onSuccess: (data) => {
     if(!(data.data.error)){
-      console.log(data);
       dispatch(userLoggedIn(data.data.user))
+       navigate("/")
       toast(data.data.message);
     }
     loginForm.reset();
   },
   onError: (error) => {
+    console.log(error.response.data.message)
+    toast(error.response.data.message ||error.response.data.errors[0]);
     console.error("Login Error:", error);
   },
 });

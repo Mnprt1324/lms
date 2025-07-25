@@ -6,8 +6,7 @@ import { useSelector } from "react-redux";
 
 export const Navbar = () => {
   const navigate=useNavigate();
-  const {user,isAuthenticate}=useSelector((state)=>state.auth)
-  console.log("SDFDS",user);
+  const {isAuthenticate}=useSelector((state)=>state.auth)
   return (
     <div className="h-16 dark:bg-[#0a0a0a] border-bottom flex md:justify-around items-center border-1 ">
       <div className="flex items-center gap-3">

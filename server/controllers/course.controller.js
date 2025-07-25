@@ -1,11 +1,12 @@
 const Course = require("../models/course.model");
-const { deleteMediaFromCloudinary } = require("../utils/cloudinary");
+const { deleteMediaFromCloudinary, uploadMedia } = require("../utils/cloudinary");
 
 
 //create coures
 module.exports.createCourse = async (req, res) => {
     try {
-        const { courseTitle, category } = req.body;
+        const {title,category } = req.body;
+        const courseTitle=title; 
         if (!courseTitle || !category) {
             return res.status(400).json({ message: "Course Title and Category is required" })
         }
@@ -25,11 +26,11 @@ module.exports.createCourse = async (req, res) => {
 }
 
 //get creater course
-module.exports.getCreaterCourse = async () => {
+module.exports.getCreaterCourse = async (req,res) => {
     try {
         const userId = req.id;
-        const course = await Course.find({ creator: userId });
-        if (!course) {
+        const courses = await Course.find({ creator: userId });
+        if (!courses) {
             return res.status(400).json({
                 course: [],
                 message: "course not found"
@@ -55,6 +56,7 @@ module.exports.editCourse = async (req, res) => {
         const { courseTitle, subTitle, description, category, courseLevel, coursePrice } = req.body;
         const thumbnail = req.file;
 
+        console.log(thumbnail);
         let course = await Course.findById(courseId);
         if (!course) {
             return res.status(400).json({ message: "course not found" });
@@ -71,10 +73,11 @@ module.exports.editCourse = async (req, res) => {
 
         const updateData = { courseTitle, subTitle, description, category, courseLevel, coursePrice, courseThumbnail: courseThumbnail?.secure_url };
         //finding course and updte
-        course = await findByIdAndUpdate(courseId, updateData, { new: true });
+        course = await Course.findByIdAndUpdate(courseId, updateData, { new: true });
 
         return res.status(200).json({
             course,
+            courseThumbnail,
             message: "Course updated successfully."
         })
 

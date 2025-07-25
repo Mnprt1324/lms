@@ -1,7 +1,7 @@
 const express=require("express");
 const router=express.Router();
 
-const couresControllers=require("../controllers/course.controllers");
+const couresControllers=require("../controllers/course.controller");
 const lectureControllers=require("../controllers/lecture.controller")
 
 const { isAuthenticate } = require("../middlewares/Authenticate");
@@ -9,8 +9,8 @@ const upload = require("../utils/multer");
 
 // post routes
 router.post("/",isAuthenticate,couresControllers.createCourse);
-router.post("/getAllCourse",isAuthenticate,couresControllers.getCreaterCourse);
-router.post("/:courseId",isAuthenticate,upload.single("thumbnail"),couresControllers.editCourse);
+router.get("/getAllCourse",isAuthenticate,couresControllers.getCreaterCourse);
+router.post("/:courseId",isAuthenticate,upload.single("courseThumbnail"),couresControllers.editCourse);
 //get routes
 router.get("/:courseId",isAuthenticate,couresControllers.getCourseById);
 
