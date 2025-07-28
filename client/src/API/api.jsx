@@ -82,9 +82,47 @@ export const functionToRemoveLecture = (data) => {
     withCredentials: true,
   });
 };
-export const functionToPublishCourse = ({courseId,isPublished}) => {
-  console.log("public course")
-  return api.put(`/course/${courseId}?publish=${isPublished}`,{},{
+export const functionToPublishCourse = ({ courseId, isPublished }) => {
+  return api.put(
+    `/course/${courseId}?publish=${isPublished}`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+};
+
+export const functionToGetCourse = (courseId) => {
+  return api.get(`/course/${courseId}`, {
     withCredentials: true,
   });
+};
+export const functionToGetLecture = (lectureId) => {
+  return api.get(`/course/lecture/${lectureId}`, {
+    withCredentials: true,
+  });
+};
+export const functionToGetPublishCourses = () => {
+  return api.get(`/course/published-courses`, {
+    withCredentials: true,
+  });
+};
+export const functionToCreateOrder = (courseId) => {
+  return api.post(
+    `/course/payment/create-order`,
+    { courseId },
+    {
+      withCredentials: true,
+    }
+  );
+};
+
+export const functionToVerifyPayment = (data) => {
+  return api.post(
+    `/course/payment/verify`,
+    { data },
+    {
+      withCredentials: true,
+    }
+  );
 };

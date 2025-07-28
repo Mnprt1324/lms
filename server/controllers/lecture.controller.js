@@ -1,6 +1,7 @@
 const { model } = require("mongoose");
 const Course = require("../models/course.model");
 const Lecture = require("../models/lecture.model");
+const { deleteVideoFromCloudinary } = require("../utils/cloudinary");
 
 
 //creating a lecture
@@ -16,8 +17,7 @@ module.exports.createLecture = async (req, res) => {
         };
         //creating new lecture
         const lecture = new Lecture({ lectureTitle });
-
-        //finding course and update the lecture field
+        await lecture.save();
         const course = await Course.findById(courseId);
         if (course) {
             course.lectures.push(lecture._id);
@@ -38,7 +38,7 @@ module.exports.createLecture = async (req, res) => {
 module.exports.getCourseLecture = async (req, res) => {
     try {
         const { courseId } = req.params;
-        const course = await Course.findById({ courseId }).populate("lectures")
+        const course = await Course.findById({ _id:courseId }).populate("lectures")
         if (!course) {
             return res.status(404).json({
                 message: "Course not found"
@@ -74,7 +74,7 @@ module.exports.togglePublishCourse = async (req, res) => {
     try {
         const { courseId } = req.params;
         const { publish } = req.query;
-        const course = await Course.findById({ courseId })
+        const course = await Course.findById({_id:courseId })
         if (!course) {
             return res.status(404).json({ message: "Course not found" })
         }
@@ -99,22 +99,27 @@ module.exports.togglePublishCourse = async (req, res) => {
 module.exports.editLecture = async (req, res) => {
     try {
         //validate req.body
-        const { lectureTitle, videoInfo, isPreviewFree } = req.body;
+        const { lectureTitle ,lectureVideo, isPreviewFree } = req.body;
         const { courseId, lectureId } = req.params;
+        const videoInfo=lectureVideo;
         const lecture = await Lecture.findById(lectureId);
         if (!lecture) {
             return res.status(404).json({ message: "lecture not found" })
         }
-
+          if (lecture.publicId) {
+            await deleteVideoFromCloudinary(lecture.publicId);
+        }
+        
         if (lectureTitle) lecture.lectureTitle = lectureTitle;
-        if (videoInfo?.videoUrl) lecture.videoUrl = videoInfo.videoUrl;
-        if (videoInfo?.publicId) lecture.publicId = videoInfo.publicId;
+        if (videoInfo?.secure_url) lecture.videoUrl = videoInfo.secure_url;
+        if (videoInfo?.public_id) lecture.publicId = videoInfo. public_id;
         lecture.isPreviewFree = isPreviewFree;
         await lecture.save();
 
         const course = await Course.findById(courseId);
         // if not present 
-        if (course && course.lecture.includes(lectureId)) {
+    
+        if (course && !course.lectures.includes(lectureId)) {
             course.lectures.push(lecture._id);
             await course.save();
         }

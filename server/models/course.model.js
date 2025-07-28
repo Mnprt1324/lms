@@ -35,7 +35,7 @@ const courseSchema=mongoose.Schema({
     ],
     creator:{
          type:mongoose.Schema.Types.ObjectId,
-         ref:"User"  
+         ref:"Users"  
     },
         isPublished:{
         type:Boolean,

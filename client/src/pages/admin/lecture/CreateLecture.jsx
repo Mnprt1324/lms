@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { Lecture } from "./Lecture";
 import { toast } from "sonner";
+import { ArrowLeft } from "lucide-react";
 
 export const CreateLecture = () => {
   const { courseId } = useParams();
@@ -30,7 +31,7 @@ export const CreateLecture = () => {
   const createLecture = useMutation({
     mutationFn: functionToCreateLecture,
     onSuccess: (data) => {
-      if(data.data.message){
+      if (data.data.message) {
         toast(data.data.message);
       }
       form.reset();
@@ -48,17 +49,27 @@ export const CreateLecture = () => {
     queryKey: [createLecture.isPending],
     queryFn: () => functionToGetLectures(courseId),
   });
-
-
   return (
     <div className="flex mx-10 flex-col">
-      <div className="mb-5">
-        <h1 className="font-bold text-xl">
-          Let’s add a course – basic details
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-        </p>
+      <div className="mb-5 flex gap-5 items-center">
+        <Button
+          size="icon"
+          variant="outline"
+          className="rounded-full"
+          onClick={() => {
+            navigate("/admin/course");
+          }}
+        >
+          <ArrowLeft size={16} />
+        </Button>
+        <div>
+          <h1 className="font-bold text-xl">
+            Let’s add a lecture – basic details
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          </p>
+        </div>
       </div>
       <div>
         <Form {...form}>
@@ -80,7 +91,7 @@ export const CreateLecture = () => {
               <Button
                 variant={"outline"}
                 type="button"
-                onClick={() => navigate(-1)}
+                onClick={() => navigate("/admin/course")}
               >
                 Back to Course
               </Button>
@@ -89,20 +100,25 @@ export const CreateLecture = () => {
           </form>
         </Form>
       </div>
-        <div className="mt-10 flex flex-col gap-5">
-          {isPending ? (
-            <p>loading...</p>
-          ) : isError ? (
-            <p>failed to load lectures</p>
-          ) : data.data.lectures.length === 0 ? (
-            <p>no lecture avilable</p>
-          ) : (
-            data.data.lectures.map((lecture,index)=>(
+      <div className="mt-10 flex flex-col gap-5">
+        {isPending ? (
+          <p>loading...</p>
+        ) : isError ? (
+          <p>failed to load lectures</p>
+        ) : data.data.lectures.length === 0 ? (
+          <p>no lecture avilable</p>
+        ) : (
+          data.data.lectures.map((lecture, index) => (
             <>
-            <Lecture key={lecture._id} lecture={lecture} index={index} courseId={courseId}/>
+              <Lecture
+                key={lecture._id}
+                lecture={lecture}
+                index={index}
+                courseId={courseId}
+              />
             </>
-            ))
-          )}
+          ))
+        )}
       </div>
     </div>
   );

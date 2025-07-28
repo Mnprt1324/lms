@@ -3,9 +3,10 @@ import { ArrowLeft } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { LectureTab } from "./LectureTab";
 
+
 export const EditLecture = () => {
     const navigate=useNavigate();
-  return (
+    return (
    <div>
      <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2"> 

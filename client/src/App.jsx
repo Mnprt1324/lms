@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import { userLoggedIn } from "./features/userSlice";
 import { CreateLecture } from "./pages/admin/lecture/CreateLecture";
 import { EditLecture } from "./pages/admin/lecture/EditLecture";
+import { CourseDetails } from "./pages/admin/course/CourseDetails";
 function App() {
 
    const {data} =useGetUserProfile();
@@ -73,6 +74,11 @@ function App() {
             },
           ],
         },
+    {
+      path:"/course/:courseId",
+      element:<CourseDetails/>
+    }
+
       ],
     },
   ]);

@@ -26,6 +26,7 @@ import { useMutation } from "@tanstack/react-query";
 import { functionTocreateCourse } from "../../../API/api";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
  
 export const CreateCourse = () => {
   const form = useForm({
@@ -58,13 +59,25 @@ export const CreateCourse = () => {
 
   return (
     <div className="flex mx-10 flex-col">
-      <div className="mb-5">
-        <h1 className="font-bold text-xl">
+      <div className="mb-5 flex gap-5 items-center">
+         <Button
+          size="icon"
+          variant="outline"
+          className="rounded-full"
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          <ArrowLeft size={16} />
+        </Button>
+       <div>
+         <h1 className="font-bold text-xl">
           Let’s add a course – basic details
         </h1>
         <p className="text-sm text-muted-foreground">
           Lorem ipsum dolor sit, amet consectetur adipisicing elit.
         </p>
+       </div>
       </div>
 
       <Form {...form}>

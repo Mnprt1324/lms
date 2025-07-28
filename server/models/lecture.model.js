@@ -12,4 +12,4 @@ const lectureSchema = new mongoose.Schema({
 },{timestamps:true});
 
  const Lecture = mongoose.model("Lecture", lectureSchema);
- module.exports=Lecture
+ module.exports=Lecture;

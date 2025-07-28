@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 
 const userRouter=require("./routers/user.router");
 const courseRouter=require("./routers/course.router");
-
+const mediaRouter=require("./routers/media.routes")
 
 dotenv.config();
 
@@ -26,8 +26,10 @@ app.get('/', (req, res) => {
     res.send(`hello from server`)
 })
 
+
 app.use("/user",userRouter);
 app.use("/course",courseRouter);
+app.use("/media",mediaRouter)
 
 const port=process.env.PORT||5000;
 app.listen(port, () => {

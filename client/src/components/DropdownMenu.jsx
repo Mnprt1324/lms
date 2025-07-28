@@ -34,7 +34,7 @@ export const DropdownMenu2 = () => {
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu className="pointer-cursor">
       <DropdownMenuTrigger asChild>
         <Avatar>
           <AvatarImage src={user?.avatar||"https://github.com/shadcn.png"} />
@@ -54,7 +54,7 @@ export const DropdownMenu2 = () => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-           <NavLink to={`/admin`}><Button>DashBoard</Button></NavLink>
+           <NavLink to={`/admin/dashboard`}><Button>DashBoard</Button></NavLink>
           </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

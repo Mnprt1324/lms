@@ -29,10 +29,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-
+import { useGetLectureById } from "../.././../../hooks/usegetLectureById";
 export const LectureTab = () => {
   const navigate=useNavigate();
   const { courseId, lectureId } = useParams();
+    const {lecture,isPending,isError} =useGetLectureById(lectureId)
   const [uploadFile, setUploadFile] = useState(null);
   const [uploadFileRes, setUploadFileRes] = useState(null);
   const [mediaProgress, setMediaProgress] = useState(false);
@@ -40,11 +41,11 @@ export const LectureTab = () => {
   const form = useForm({
     resolver: zodResolver(lectureEditSchema),
     defaultValues: {
-      lectureTitle: "",
+      lectureTitle:lecture?.lectureTitle|| "" ,
       isPreviewFree: false,
     },
   });
-
+console.log(lecture)
   const uploadVideo = useMutation({
     mutationFn: ({ formData, onProgress }) => {
       return functionToUploadViedo({ formData, onProgress });
@@ -61,7 +62,7 @@ export const LectureTab = () => {
     },
     onError: (error) => {
       console.log(error);
-      toast.error(error.data.message);
+      toast.error(error.data.message||"error while Upload");
     },
   });
 

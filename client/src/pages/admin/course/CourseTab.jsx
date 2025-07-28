@@ -29,30 +29,48 @@ import { EditCourseSchema } from "@/validation/userValidation";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation } from "@tanstack/react-query";
-import {  useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { functionToEditCourse, functionToPublishCourse } from "@/API/api";
 import { toast } from "sonner";
-import { useState } from "react";
-export const CourseTab = () => {
+import { useEffect, useState } from "react";
+import { Loader } from "@/components/ui/Loader";
+export const CourseTab = ({ course }) => {
   const { courseId } = useParams();
   const navigate = useNavigate();
-  const [isPublished, setIsPublished] = useState(false);
+  console.log(course);
+  const [isPublished, setIsPublished] = useState(course?.isPublished);
   const form = useForm({
     resolver: zodResolver(EditCourseSchema),
     defaultValues: {
       courseTitle: "",
       subTitle: "",
       description: "",
-      category: "",
-      courseLevel: "",
+      category:"" ,
+      courseLevel:"",
       coursePrice: "",
       courseThumbnail: "",
     },
   });
+
+  useEffect(() => {
+    if (course) {
+      form.reset({
+        courseTitle: course.courseTitle || "",
+        subTitle: course.subTitle || "",
+        description: course.description || "",
+        category: course?.category || "",
+        courseLevel: course?.courseLevel||"",
+        coursePrice: +course?.coursePrice || "",
+        courseThumbnail: "",
+      });
+
+      setIsPublished(course.isPublished);
+    }
+  }, [course]);
+
   const courseEdit = useMutation({
     mutationFn: functionToEditCourse,
     onSuccess: (data) => {
-      console.log(data);
       form.reset();
       navigate(-1);
     },
@@ -100,7 +118,7 @@ export const CourseTab = () => {
         </div>
         <div className="flex gap-3">
           <Button variant="outline" type="button" onClick={handlePublishClick}>
-            {!isPublished ? "Unpublished" : "Publish"}
+            {isPublished ? "Unpublished" : "Publish"}
           </Button>
           <Button>Remove Lectures</Button>
         </div>
@@ -248,7 +266,7 @@ export const CourseTab = () => {
               name="courseThumbnail"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Course Thumbnail</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Enter course price"
@@ -266,7 +284,16 @@ export const CourseTab = () => {
 
             <div className="flex gap-3">
               <Button variant="outline">Cancel</Button>
-              <Button type="submit">Save</Button>
+              <Button type="submit">
+                {courseEdit.isPending ? (
+                  <>
+                    {" "}
+                    <Loader />
+                  </>
+                ) : (
+                  "Save"
+                )}
+              </Button>
             </div>
           </form>
         </Form>

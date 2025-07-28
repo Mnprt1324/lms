@@ -9,22 +9,37 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
-import { functionTogetCourses } from "../../../API/api";
-import { Badge } from "@/components/ui/badge"
-import { Edit } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Edit } from "lucide-react";
+import { useGetCourse } from "../../../../hooks/useGetCourse";
+import { useSelector } from "react-redux";
 export const CouresTable = () => {
+  const { isPending, isError } = useGetCourse();
   const navigate = useNavigate();
 
-  const { data, isError, isPending } = useQuery({
-    queryKey: ["course"],
-    queryFn: functionTogetCourses,
-  });
-   console.log(data?.data.courses)
-  
+  const courses = useSelector((state) => state.course.courses);
+  console.log(courses);
+  if (isPending)
+    return (
+      <>
+        <h1>loading...</h1>
+      </>
+    );
+
   return (
     <div>
-      <div>
+      <div className="flex gap-5 items-center mb-5">
+        <Button
+          size="icon"
+          variant="outline"
+          className="rounded-full"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          <ArrowLeft size={16} />
+        </Button>
         <Button onClick={() => navigate("/admin/course/create")}>
           Create New Course
         </Button>
@@ -41,21 +56,21 @@ export const CouresTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.data.courses.map((course) => (
+            {courses?.map((course) => (
               <TableRow key={course._id}>
-                
                 <TableCell>{course.coursePrice || "NA"}</TableCell>
                 <TableCell>
-                  <Badge>
-                    
-                    {course.isPublished ? "Published" : "Draft"}
-                  </Badge>{" "}
+                  <Badge>{course.isPublished ? "Published" : "Draft"}</Badge>{" "}
                 </TableCell>
                 <TableCell className="font-medium">
                   {course.courseTitle || "NA"}
                 </TableCell>
                 <TableCell className="text-right">
-                    <button onClick={()=> navigate(`/admin/course/${course._id}`)}><Edit/></button>
+                  <button
+                    onClick={() => navigate(`/admin/course/${course._id}`)}
+                  >
+                    <Edit />
+                  </button>
                 </TableCell>
               </TableRow>
             ))}

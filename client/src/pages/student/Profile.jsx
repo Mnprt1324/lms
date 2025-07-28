@@ -20,19 +20,20 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { CourseCard } from "./CourseCard";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { functionToGetProfile, functionToUpdateProfile } from "../../API/api";
+import { functionToUpdateProfile } from "../../API/api";
 import { profileSchema } from "../../validation/userValidation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
+import { use } from "react";
 export const Profile = () => {
   const enrolledCourses = [1, 2, 3];
-   const user=useSelector((state)=>state.auth.user);
+  const user = useSelector((state) => state.auth.user);
   return (
     <div className="max-w-4xl mx-auto my-10 px-4 md:px-0">
       <div>
@@ -41,7 +42,7 @@ export const Profile = () => {
           <div>
             <Avatar className="h-24 w-24 md:h-32 md:w-32 mb-4">
               <AvatarImage
-                src={user.avatar || "https://github.com/shadcn.png"}
+                src={user?.avatar || "https://github.com/shadcn.png"}
               />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
@@ -51,7 +52,7 @@ export const Profile = () => {
               <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
                 Name:
                 <span className="font-normal text-gray-700 dark:text-gray-300 ml-2">
-                  {user.name || "NA"}
+                  {user?.name || "NA"}
                 </span>
               </h1>
             </div>
@@ -59,7 +60,7 @@ export const Profile = () => {
               <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
                 Email:
                 <span className="font-normal text-gray-700 dark:text-gray-300 ml-2">
-                  {user.email || "NA"}
+                  {user?.email || "NA"}
                 </span>
               </h1>
             </div>
@@ -67,7 +68,7 @@ export const Profile = () => {
               <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
                 Role:
                 <span className="font-normal text-gray-700 dark:text-gray-300 ml-2">
-                  {user.role || "NA"}
+                  {user?.role || "NA"}
                 </span>
               </h1>
             </div>
@@ -80,7 +81,7 @@ export const Profile = () => {
       <div>
         <h1 className="font-medium text-lg">Courses you're enrolled in</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my-5">
-          {user.enrollCourses.length === 0 ? (
+          {user?.enrollCourses.length === 0 ? (
             <h1>You haven't enrolled yet</h1>
           ) : (
             enrolledCourses.map((coures, index) => <CourseCard key={index} />)
@@ -92,11 +93,12 @@ export const Profile = () => {
 };
 
 function Dialogbox() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
   const form = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: "",
+      name: user?.name||"",
       profilePhoto: undefined,
     },
   });
@@ -105,26 +107,24 @@ function Dialogbox() {
     onSuccess: (data) => {
       console.log(data);
       if (!data.data.error) {
-        toast(data.data.message);
+        toast.success(data.data.message);
         form.reset();
-        navigate()  
+        navigate(0);
       }
-      loginForm.reset();
+      form.reset();
     },
     onError: (error) => {
-      console.log(error);
       console.log(error.response.data.message);
-      toast(error.response.data.message);
-      console.error("profileUpdate", error);
+      toast.error(error.response.data.message || "Error while Profile Update");
     },
   });
 
-  const onSubmit = async(values) => {
+  const onSubmit = async (values) => {
     const formData = new FormData();
     formData.append("name", values.name);
     formData.append("profilePhoto", values.profilePhoto[0]); // FileList -> File
-     profileUpdate.mutate(formData)
-    console.log("Form Data:",formData);
+    profileUpdate.mutate(formData);
+    console.log("Form Data:", formData);
   };
 
   return (
@@ -184,7 +184,9 @@ function Dialogbox() {
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit">{profileUpdate.ispending?"wait":"update"}</Button>
+              <Button type="submit">
+                {profileUpdate.ispending ? "wait" : "update"}
+              </Button>
             </DialogFooter>
           </form>
         </Form>
