@@ -13,24 +13,17 @@ import { Badge } from "@/components/ui/badge";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import ReactPlayer from "react-player";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PaymentDemo } from "@/pages/PaymentDemo";
 import { useMakePayment } from "../../../../hooks/useMakePayment";
-import { useState } from "react";
-import { set } from "zod";
+
+import { LoaderA } from "@/components/LoaderA";
 export const CourseDetails = () => {
   const { courseId } = useParams();
-
-  const handlePayment = useMakePayment(courseId);
   const { isPending, isError } = useGetCourseById(courseId);
   const course = useSelector((state) => state.course.singleCourse);
+  const handlePayment = useMakePayment(courseId);
 
-  if (isPending)
-    return (
-      <>
-        <h1>loading</h1>
-      </>
-    );
-  console.log(course);
+
+  if (isPending) return <LoaderA />;
   return (
     <div className="flex  items-center flex-col">
       <div className=" h-100 flex items-center justify-center  bg-gradient-to-r from-blue-500 to bg-green-600">

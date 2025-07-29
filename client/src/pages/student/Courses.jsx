@@ -6,11 +6,10 @@ export const Courses = () => {
   const {isError,isPending}= useGetPublicCourse();
   const Allcourses=useSelector((state)=>state.course.allPublicCourse)
  
-  const data = [1, 2, 3, 4, 5, 6, 7, 8];
   return (
     <div className="bg-gray-50">
       <div className="max-w-7xl mx-auto p-6">
-        <h1 className="text-center text-3xl font-bold mb-10">Our Courses</h1>
+        <h1 className="text-center text-3xl font-medium mb-10">Our Courses</h1>
         <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {isPending
             ? Array.from({ length: 8 }).map((_, index) => (

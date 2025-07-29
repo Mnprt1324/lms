@@ -11,17 +11,15 @@ import { CouresTable } from "./pages/admin/course/CouresTable";
 import { CreateCourse } from "./pages/admin/course/CreateCourse";
 import { EditCourse } from "./pages/admin/course/EditCourse";
 import { useGetUserProfile } from "../hooks/useGetUserProfile";
-import { useQuery } from "@tanstack/react-query";
-import { functionToGetProfile } from "./API/api";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { userLoggedIn } from "./features/userSlice";
+
 import { CreateLecture } from "./pages/admin/lecture/CreateLecture";
 import { EditLecture } from "./pages/admin/lecture/EditLecture";
 import { CourseDetails } from "./pages/admin/course/CourseDetails";
-function App() {
+import { CourseProgress } from "./pages/admin/course/CourseProgress";
+import { CoursesPage } from "./pages/admin/course/CoursesPage";
 
-   const {data} =useGetUserProfile();
+function App() {
+   useGetUserProfile();
 
   const router = createBrowserRouter([
     {
@@ -43,6 +41,10 @@ function App() {
         {
           path: "/profile",
           element: <Profile />,
+        },
+        {
+          path: "/courses",
+          element: <CoursesPage />,
         },
         {
           path: "/admin",
@@ -74,15 +76,18 @@ function App() {
             },
           ],
         },
-    {
-      path:"/course/:courseId",
-      element:<CourseDetails/>
-    }
-
+        {
+          path: "/course/:courseId",
+          element: <CourseDetails />,
+        },
+        {
+          path: "/course/:courseId/progress",
+          element: <CourseProgress />,
+        },
       ],
     },
   ]);
-    
+
   return (
     <>
       <RouterProvider router={router}></RouterProvider>

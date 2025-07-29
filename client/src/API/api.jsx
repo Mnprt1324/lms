@@ -117,12 +117,35 @@ export const functionToCreateOrder = (courseId) => {
   );
 };
 
-export const functionToVerifyPayment = (data) => {
+export const functionToVerifyPayment = (courseId) => {
   return api.post(
-    `/course/payment/verify`,
+    `/course/${courseId}/payment/verify`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+};
+
+export const functionToPayUpdateStatus = (data) => {
+  return api.put(
+    `/course/payment/update`,
     { data },
     {
       withCredentials: true,
     }
   );
+};
+
+export const functionTogetCoursesProgress = (courseId) => {
+  return api.get(`/progress/${courseId}`);
+};
+export const functionTogetUpdatePrgress = ({ courseId, lectureId }) => {
+  return api.post(`progress/${courseId}/lecture/${lectureId}`);
+};
+export const functionToMarkCompelete = (courseId) => {
+  return api.get(`progress/${courseId}/complete`);
+};
+export const functionTMarkInComplete = (courseId) => {
+  return api.get(`progress/${courseId}/incomplete`);
 };

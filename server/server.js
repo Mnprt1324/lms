@@ -6,9 +6,10 @@ const connectToDB = require("./utils/db")
 const cookieParser = require('cookie-parser');
 
 
-const userRouter=require("./routers/user.router");
-const courseRouter=require("./routers/course.router");
-const mediaRouter=require("./routers/media.routes")
+const userRouter = require("./routers/user.router");
+const courseRouter = require("./routers/course.router");
+const mediaRouter = require("./routers/media.routes")
+const progressRouter = require("./routers/courseProgress.routes")
 
 dotenv.config();
 
@@ -18,20 +19,21 @@ app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
   origin: "http://localhost:5173",
-  credentials: true, 
+  credentials: true,
 }));
 connectToDB();
 
 app.get('/', (req, res) => {
-    res.send(`hello from server`)
+  res.send(`hello from server`)
 })
 
 
-app.use("/user",userRouter);
-app.use("/course",courseRouter);
-app.use("/media",mediaRouter)
+app.use("/user", userRouter);
+app.use("/course", courseRouter);
+app.use("/media", mediaRouter)
+app.use("/progress", progressRouter)
 
-const port=process.env.PORT||5000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
-    console.log(`server is listening at port :${port}`)
+  console.log(`server is listening at port :${port}`)
 })

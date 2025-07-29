@@ -36,8 +36,8 @@ export const DropdownMenu2 = () => {
   return (
     <DropdownMenu className="pointer-cursor">
       <DropdownMenuTrigger asChild>
-        <Avatar>
-          <AvatarImage src={user?.avatar||"https://github.com/shadcn.png"} />
+        <Avatar className="w-[36px] h-auto">
+          <AvatarImage  src={user?.avatar||"https://github.com/shadcn.png"} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

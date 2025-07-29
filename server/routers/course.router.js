@@ -3,7 +3,7 @@ const router=express.Router();
 
 const couresControllers=require("../controllers/course.controller");
 const lectureControllers=require("../controllers/lecture.controller")
-const coursePayControllers=require("../controllers/courseProgress.controller")
+const coursePayControllers=require("../controllers/coursePayment.controller")
 const { isAuthenticate } = require("../middlewares/Authenticate");
 const upload = require("../utils/multer");
 
@@ -12,7 +12,7 @@ router.post("/",isAuthenticate,couresControllers.createCourse);
 router.get("/getAllCourse",isAuthenticate,couresControllers.getCreaterCourse);
 router.post("/:courseId",isAuthenticate,upload.single("courseThumbnail"),couresControllers.editCourse);
 //get routes
-router.get("/published-courses",isAuthenticate,couresControllers.getAllPublishCourse)
+router.get("/published-courses",couresControllers.getAllPublishCourse)
 router.get("/:courseId",isAuthenticate,couresControllers.getCourseById);
 // lecture routes
 router.post("/lecture/:courseId",isAuthenticate,lectureControllers.createLecture);
@@ -23,8 +23,8 @@ router.delete("/lecture/:lectureId",isAuthenticate,lectureControllers.removeLect
 router.put("/:courseId",isAuthenticate,lectureControllers.togglePublishCourse);
 
 router.post("/payment/create-order",isAuthenticate,coursePayControllers.createOrder);
-router.post("/payment/verify",isAuthenticate,coursePayControllers.verifyPayment);
-
+router.post("/:courseId/payment/verify",isAuthenticate,coursePayControllers.verifyPayment);
+router.put("/payment/update",isAuthenticate,coursePayControllers.updatePurchaseCourse)
 
 
 

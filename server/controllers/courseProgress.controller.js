@@ -1,63 +1,120 @@
-const Razorpay = require("razorpay");
 const Course = require("../models/course.model");
-const CoursePurchase = require("../models/purchaseCourse")
-const crypto = require("crypto");
-module.exports.createOrder = async (req, res) => {
+const CourseProgress = require("../models/courseProgress");
+
+
+module.exports.getCourseProgress = async (req, res) => {
     try {
-
+        const { courseId } = req.params;
         const userId = req.user;
-        const { courseId } = req.body;
-        const course = await Course.findById(courseId);
-        if (!course) {
-            return res.status(404).json({ error: true, message: "no Course Found" });
-        }
-        const amount = course.coursePrice;
+        //fetching courseProgress and course details
+        let courseProgress = await CourseProgress.findOne({ courseId, userId }).populate({
+            path: "courseId",
 
-        const newPurchase = new CoursePurchase({
-            courseId,
-            userId,
-            amount: course.coursePrice,
-            status: "pending",
-            paymentId:"a"
-        })
-        await newPurchase.save();
-        const razorpay = new Razorpay({
-            key_id: process.env.rzp_Api_Key,
-            key_secret: process.env.rzp_key_secret
-        })
-
-        const options = {
-            amount: amount * 100, // Razorpay uses paise
-            currency: "INR",
-            receipt: "receipt_" + Date.now(),
-        };;
-        const order = await razorpay.orders.create(options);
-        if (!order) {
-            return res.status(404).json({ error: true, message: "error while payment" })
+        });
+        const courseDetails = await Course.findById(courseId).populate("lectures");
+        if (!courseDetails) {
+            return res.status(404).json({ message: "Course Not Found" });
         }
-        return res.status(200).json({ error: false, message: "payment Order scussfull", order,newPurchase })
+        if (!courseProgress) {
+            return res.status(200).json({
+                data: {
+                    courseDetails,
+                    progress: [],
+                    completed: false,
+                }
+            })
+        }
+
+        return res.status(200).json({
+            data: {
+                courseDetails,
+                progress: courseProgress.lectureProgress,
+                completed: courseProgress.complete,
+            }
+
+        }
+        )
+
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({ message: "internal server error", error: true })
+        console.log("getCourseProgress", error)
+        return res.status(500).json({ message: "Internal Server Error" })
     }
 }
 
+module.exports.updateLectureProgress = async (req, res) => {
+    try {
+        const { courseId, lectureId } = req.params;
+        const userId = req.user;
+        //fetching the courseProgress 
+        let courseProgress = await CourseProgress.findOne({ courseId, userId });
+        if (!courseProgress) {
+            //if no courseProgress find then creating a new progress
+            courseProgress = new CourseProgress({
+                courseId, userId, completed: false, lectureProgress: []
+            })
+        }
+        //if courseProgress is available then finding lecture index from 
+        const lectureIndex = courseProgress.lectureProgress.findIndex((lecture) => {
+            return lecture.lectureId === lectureId;
+        })
 
+        if (lectureIndex !== -1) {
+            //lectureIndex is non empty the update the viewed field
+            courseProgress.lectureProgress[lectureIndex].viewed = true;
+        } else {
+            //add new lecture Progress
+            courseProgress.lectureProgress = push({
+                lectureId, viewed: true
+            })
+        }
 
-module.exports.verifyPayment = (req, res) => {
-    const {data} =req.body;
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature }=data;
-    console.log(req.body);
-  const sign = razorpay_order_id + "|" + razorpay_payment_id;
+        const lectureProgressLenght = courseProgress.lectureProgress.filter((lectureProg) => lectureProg.viewed).length;
+        const course = await Course.findById(courseId);
+        if (course.lectures.length === lectureProgressLenght) {
+            courseProgress.completed = true;
+        }
+        await courseProgress.save();
+        return res.status(200).json({ message: "lecture progress Update Scussfully" })
+    } catch (error) {
 
-  const expectedSign = crypto
-    .createHmac("sha256", process.env.rzp_key_secret)
-    .update(sign.toString())
-    .digest("hex");
+        console.log("updateLectureProgress", error)
+        return res.status(500).json({ message: "Internal Server Error" })
+    }
 
-  if (expectedSign === razorpay_signature) {
-    res.status(200).json({ success: true, message: "Payment verified" });
-  } else {
-    res.status(400).json({ success: false, message: "Payment verification failed" });
-  }
-};
+}
+
+module.exports.markAsComplete = async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        const userId = req.user;
+        const courseProgress = await CourseProgress.findOne({ courseId, userId });
+        if (!courseProgress) return res.status(404).json({ message: "course Progress not found" });
+
+        courseProgress.lectureProgress.map((lectureProgress) => lectureProgress.viewed = true);
+        courseProgress.completed = true;
+        await courseProgress.save();
+        return res.status(200).json({ message: "course marked completed" });
+    } catch (error) {
+        console.log("markAsComplete", error)
+        return res.status(500).json({ message: "Internal Server Error" })
+
+    }
+}
+
+module.exports.markAsInComplete = async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        const userId = req.user;
+        const courseProgress = await CourseProgress.findOne({ courseId, userId });
+        if (!courseProgress) return res.status(404).json({ message: "course Progress not found" });
+
+        courseProgress.lectureProgress.map((lectureProgress) => lectureProgress.viewed = false);
+        courseProgress.completed = false;
+        await courseProgress.save();
+        return res.status(200).json({ message: "course marked Incompleted" });
+    } catch (error) {
+        console.log("markAsComplete", error)
+        return res.status(500).json({ message: "Internal Server Error" })
+
+    }
+}

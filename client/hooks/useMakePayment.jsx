@@ -1,14 +1,18 @@
 import { useRazorpay } from "react-razorpay";
-import { functionToCreateOrder, functionToVerifyPayment } from "../src/API/api";
+import { functionToCreateOrder, functionToPayUpdateStatus, functionToVerifyPayment } from "../src/API/api";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export const useMakePayment = (courseId) => {
   const { Razorpay } = useRazorpay();
+  const navigate = useNavigate();
 
   const handlePayment = async () => {
     try {
       // 1. Create order from backend
       const res = await functionToCreateOrder(courseId);
+      console.log(res);
+      const newPurchase=res.data.newPurchase;
       const order = res.data.order;
 
       if (!order?.id) {
@@ -26,8 +30,13 @@ export const useMakePayment = (courseId) => {
         order_id: order.id,
         handler: async (res) => {
           try {
-            const resp = await functionToVerifyPayment(res);
-           toast.success(resp.data.message);
+            const response=await functionToPayUpdateStatus({...res,newPurchase});
+            console.log(response)
+            if(response.data.message){
+              toast.success(response.data.message);
+            }
+            navigate(`/course/${courseId}/progress`);
+            // const resp = await functionToVerifyPayment({...res,newPurchase});
           } catch (error) {
             console.log(error);
           }
