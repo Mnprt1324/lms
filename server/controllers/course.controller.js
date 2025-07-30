@@ -1,6 +1,6 @@
 const Course = require("../models/course.model");
 const { deleteMediaFromCloudinary, uploadMedia } = require("../utils/cloudinary");
-const User=require("../models/user.models")
+const User = require("../models/user.models")
 
 //create coures
 module.exports.createCourse = async (req, res) => {
@@ -92,8 +92,8 @@ module.exports.getCourseById = async (req, res) => {
     try {
         const courseId = req.params.courseId;
         const course = await Course.findById(courseId).populate([
-          {path:"lectures",select:"lectureTitle videoUrl isPreviewFree"},
-          {path:"creator",select:"avatar name email"},
+            { path: "lectures", select: "lectureTitle videoUrl isPreviewFree" },
+            { path: "creator", select: "avatar name email" },
 
         ]);
         if (!course) {
@@ -107,9 +107,9 @@ module.exports.getCourseById = async (req, res) => {
 }
 
 //get public course
-module.exports.getAllPublishCourse = async (req,res) => {
+module.exports.getAllPublishCourse = async (req, res) => {
     try {
-        const courses = await Course.find({ isPublished: true }).populate({path:"creator",select: "name email avatar"});
+        const courses = await Course.find({ isPublished: true }).populate({ path: "creator", select: "name email avatar" });
         if (!courses) {
             return res.status(404).json({ message: "Course not found" })
         }
@@ -119,3 +119,36 @@ module.exports.getAllPublishCourse = async (req,res) => {
         res.status(500).json({ error: true, message: 'internal server error' });
     }
 }
+
+module.exports.filterCourse = async (req, res) => {
+  try {
+    const { All, sortOrder, selectedCategories } = req.body;
+
+    const filter = {
+      isPublished: true,
+    };
+
+    // If "All" is false and categories are selected
+    if (!All && selectedCategories && selectedCategories.length > 0) {
+      filter.category = { $in: selectedCategories };
+    }
+
+    // Sorting logic
+    let sort = {};
+    if (sortOrder === "0") {
+      sort.coursePrice = 1;
+    } else if (sortOrder === "1") {
+      sort.coursePrice = -1;
+    }
+
+    const courses = await Course.find(filter)
+      .sort(sort)
+      .populate({ path: "creator", select: "name avatar" });
+
+    res.status(200).json({ courses, message: "Filtered courses fetched" });
+  } catch (error) {
+    console.log("filterCourse error:", error);
+    res.status(500).json({ error: true, message: "Internal server error" });
+  }
+};
+

@@ -50,7 +50,7 @@ export const CreateLecture = () => {
     queryFn: () => functionToGetLectures(courseId),
   });
   return (
-    <div className="flex mx-10 flex-col">
+    <div className="flex md:mx-10 flex-col">
       <div className="mb-5 flex gap-5 items-center">
         <Button
           size="icon"

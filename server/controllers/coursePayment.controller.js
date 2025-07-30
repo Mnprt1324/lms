@@ -2,6 +2,7 @@ const Razorpay = require("razorpay");
 const Course = require("../models/course.model");
 const CoursePurchase = require("../models/purchaseCourse")
 const crypto = require("crypto");
+const User = require("../models/user.models");
 module.exports.createOrder = async (req, res) => {
     try {
 
@@ -35,7 +36,7 @@ module.exports.createOrder = async (req, res) => {
         if (!order) {
             return res.status(404).json({ error: true, message: "error while payment" })
         }
-       
+
         newPurchase.paymentId = order.id;
         await newPurchase.save();
         return res.status(200).json({ error: false, message: "payment Order scussfull", order, newPurchase: newPurchase._id })
@@ -48,16 +49,30 @@ module.exports.createOrder = async (req, res) => {
 
 module.exports.updatePurchaseCourse = async (req, res) => {
     try {
-        const { newPurchase, razorpay_payment_id,razorpay_signature, razorpay_order_id } = req.body.data;
-    
+        const { newPurchase, razorpay_payment_id, razorpay_signature, razorpay_order_id } = req.body.data;
+        const userId = req.user;
+        const user = await User.findById(userId);
         let CoursePur = await CoursePurchase.findById(newPurchase);
         if (!CoursePur) {
-            return res.status(404).json({ success:false,message: "No Course Purchase found" });
+            return res.status(404).json({ success: false, message: "No Course Purchase found" });
         }
-        CoursePur.orderId=razorpay_order_id
+        const course = await Course.findById(CoursePur.courseId)
+        CoursePur.orderId = razorpay_order_id
         CoursePur.paymentId = razorpay_payment_id;
-        CoursePur.paymentSignature=razorpay_signature
+        CoursePur.paymentSignature = razorpay_signature
         CoursePur.status = "completed"
+
+
+        if (!course.enrolledStudents.includes(userId)) {
+            course.enrolledStudents.push(userId);
+        }
+
+        if (!user.enrollCourses.includes(CoursePur.courseId)) {
+            user.enrollCourses.push(CoursePur.courseId);
+        }
+
+         await course.save();
+        await user.save();
         await CoursePur.save();
         return res.status(200).json({ message: "Payment Done" });
     } catch (error) {
@@ -68,12 +83,12 @@ module.exports.updatePurchaseCourse = async (req, res) => {
 
 module.exports.verifyPayment = async (req, res) => {
     try {
-         const {courseId}=req.params;
-         const userId=req.user;
-         const purchaseCours=await CoursePurchase.findOne({courseId});
-         if(!purchaseCours){
-            return res.status(200).json({success:false,message:"no purchase Course found"})
-         }
+        const { courseId } = req.params;
+        const userId = req.user;
+        const purchaseCours = await CoursePurchase.findOne({ courseId });
+        if (!purchaseCours) {
+            return res.status(200).json({ success: false, message: "no purchase Course found" })
+        }
         // const sign = razorpay_order_id + "|" + razorpay_payment_id;
         // const expectedSign = crypto
         //     .createHmac("sha256", process.env.rzp_key_secret)

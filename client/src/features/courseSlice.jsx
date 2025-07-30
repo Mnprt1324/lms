@@ -4,6 +4,7 @@ const initialState = {
   singleCourse: {},
   allPublicCourse: [],
   CourseProgress: {},
+  filteredCourse:[]
 };
 
 const courseSlice = createSlice({
@@ -22,9 +23,13 @@ const courseSlice = createSlice({
     setCourseProgress: (state, action) => {
       state.CourseProgress = action.payload;
     },
+    setFilteredCourse: (state, action) => {
+      console.log(action.payload);
+      state.filteredCourse = action.payload;
+    }
   },
 });
 
-export const { userCoures, setSingleCourse, setPublicCourse ,setCourseProgress} =
+export const { userCoures, setSingleCourse, setPublicCourse ,setCourseProgress,setFilteredCourse} =
   courseSlice.actions;
 export default courseSlice.reducer;

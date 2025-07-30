@@ -11,6 +11,7 @@ const upload = require("../utils/multer");
 router.post("/",isAuthenticate,couresControllers.createCourse);
 router.get("/getAllCourse",isAuthenticate,couresControllers.getCreaterCourse);
 router.post("/:courseId",isAuthenticate,upload.single("courseThumbnail"),couresControllers.editCourse);
+router.post("/course-filter/a",couresControllers.filterCourse);
 //get routes
 router.get("/published-courses",couresControllers.getAllPublishCourse)
 router.get("/:courseId",isAuthenticate,couresControllers.getCourseById);

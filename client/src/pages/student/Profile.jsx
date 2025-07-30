@@ -30,63 +30,66 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
-import { use } from "react";
 export const Profile = () => {
-  const enrolledCourses = [1, 2, 3];
   const user = useSelector((state) => state.auth.user);
   return (
-    <div className="max-w-4xl mx-auto my-10 px-4 md:px-0">
-      <div>
-        <h1 className="font-bold text-3xl">Profile</h1>
-        <div className="flex gap-3">
-          <div>
-            <Avatar className="h-24 w-24 md:h-32 md:w-32 mb-4">
-              <AvatarImage
-                src={user?.avatar || "https://github.com/shadcn.png"}
-              />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          </div>
-          <div>
-            <div className="mb-2">
-              <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
-                Name:
-                <span className="font-normal text-gray-700 dark:text-gray-300 ml-2">
-                  {user?.name || "NA"}
-                </span>
-              </h1>
-            </div>
-            <div className="mb-2">
-              <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
-                Email:
-                <span className="font-normal text-gray-700 dark:text-gray-300 ml-2">
-                  {user?.email || "NA"}
-                </span>
-              </h1>
-            </div>
-            <div className="mb-2">
-              <h1 className="font-semibold text-gray-900 dark:text-gray-100 ">
-                Role:
-                <span className="font-normal text-gray-700 dark:text-gray-300 ml-2">
-                  {user?.role || "NA"}
-                </span>
-              </h1>
-            </div>
+    <div className="max-w-5xl mx-auto my-10 px-4 md:px-6">
+      {/* Profile Heading */}
+      <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">
+        Profile
+      </h1>
 
-            {/* dilogBOx */}
-            <Dialogbox />
-          </div>
-        </div>
-      </div>
+      {/* User Info */}
+    <div className="flex   gap-6 md:gap-10 mb-10 py-5 px-4 border rounded-lg bg-white dark:bg-gray-900 shadow-sm">
+  {/* Avatar + Button */}
+  <div className="flex flex-col items-center">
+    <Avatar className="h-24 w-24 md:h-32 md:w-32 shadow border border-gray-200">
+      <AvatarImage
+        src={user?.avatar || "https://github.com/shadcn.png"}
+        alt="User Avatar"
+      />
+      <AvatarFallback className="text-lg font-semibold">
+        {user?.name?.slice(0, 2).toUpperCase() || "NA"}
+      </AvatarFallback>
+    </Avatar>
+    <div className="mt-3">
+      <Dialogbox />
+    </div>
+  </div>
+
+  {/* User Info */}
+  <div className="flex  flex-col items-start justify-start h-full">
+    <h2 className=" font-bold text-gray-800 underline capitalize dark:text-white">
+      {user?.name || "Unnamed User"}
+    </h2>
+    <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">
+      {user?.role || "Role not specified"}
+    </p>
+    {user?.email && (
+      <p className="text-sm text-gray-500 dark:text-gray-400 break-all">
+        {user?.email}
+      </p>
+    )}
+  </div>
+</div>
+
+      {/* Enrolled Courses */}
       <div>
-        <h1 className="font-medium text-lg">Courses you're enrolled in</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my-5">
-          {user?.enrollCourses.length === 0 ? (
-            <h1>You haven't enrolled yet</h1>
-          ) : (
-            enrolledCourses.map((coures, index) => <CourseCard key={index} />)
-          )}
-        </div>
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4 underline">
+          Courses You're Enrolled In
+        </h2>
+
+        {user?.enrollCourses?.length === 0 ? (
+          <p className="text-gray-600 dark:text-gray-400 italic">
+            You haven't enrolled in any courses yet.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {user?.enrollCourses.map((course, index) => (
+              <CourseCard key={index} course={course} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -95,10 +98,11 @@ export const Profile = () => {
 function Dialogbox() {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
+  console.log(user);
   const form = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: user?.name||"",
+      name: user?.name || "na ",
       profilePhoto: undefined,
     },
   });
@@ -130,19 +134,24 @@ function Dialogbox() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Edit Profile</Button>
+        <Button
+          variant="outline"
+          className=" "
+        >
+          Edit Profile
+        </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+          <DialogTitle className="text-xl">Edit Profile</DialogTitle>
+          <DialogDescription className="text-sm text-gray-500">
+            Update your name and avatar. Changes will reflect after saving.
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             {/* Name Field */}
             <FormField
               control={form.control}
@@ -151,7 +160,7 @@ function Dialogbox() {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Your Name" type="text" />
+                    <Input {...field} placeholder="Your full name" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -164,11 +173,12 @@ function Dialogbox() {
               name="profilePhoto"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Avatar</FormLabel>
+                  <FormLabel>Profile Photo</FormLabel>
                   <FormControl>
                     <Input
                       type="file"
                       accept="image/*"
+                      className="cursor-pointer"
                       onChange={(e) => field.onChange(e.target.files)}
                     />
                   </FormControl>
@@ -177,15 +187,15 @@ function Dialogbox() {
               )}
             />
 
-            {/* Dialog Footer inside the form */}
-            <DialogFooter>
+            {/* Buttons */}
+            <DialogFooter className="pt-2">
               <DialogClose asChild>
-                <Button type="button" variant="outline">
+                <Button variant="outline" type="button">
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit">
-                {profileUpdate.ispending ? "wait" : "update"}
+              <Button type="submit" disabled={profileUpdate.isPending}>
+                {profileUpdate.isPending ? "Updating..." : "Save Changes"}
               </Button>
             </DialogFooter>
           </form>

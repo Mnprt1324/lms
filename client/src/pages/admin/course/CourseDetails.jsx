@@ -14,178 +14,154 @@ import { FaRegCirclePlay } from "react-icons/fa6";
 import ReactPlayer from "react-player";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useMakePayment } from "../../../../hooks/useMakePayment";
-
 import { LoaderA } from "@/components/LoaderA";
+
 export const CourseDetails = () => {
   const { courseId } = useParams();
-  const { isPending, isError } = useGetCourseById(courseId);
+  const { isPending } = useGetCourseById(courseId);
   const course = useSelector((state) => state.course.singleCourse);
   const handlePayment = useMakePayment(courseId);
 
-
   if (isPending) return <LoaderA />;
+
   return (
-    <div className="flex  items-center flex-col">
-      <div className=" h-100 flex items-center justify-center  bg-gradient-to-r from-blue-500 to bg-green-600">
-        <div className="h-100 w-[85%] px-20 py-10 flex gap-5 ">
-          <div className="flex flex-col gap-5">
-            <h1 className="font-bold text-5xl w-[500px]">
+    <div className="flex flex-col items-center">
+      {/* Hero Section */}
+      <section className="w-full bg-gradient-to-r from-blue-500 to-green-600 text-white py-16 px-6 md:px-20">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+          <div className="space-y-6">
+            <h1 className="text-4xl md:text-5xl font-bold">
               {course?.courseTitle}
             </h1>
-            <p className="w-[550px]">{course?.subTitle}</p>
-            <div className="flex items-center gap-5">
-              <Button className="bg-slate-900 w-25">Get Started</Button>
+            <p className="text-lg">{course?.subTitle}</p>
+            <div className="flex gap-4 items-center">
+              <Button className="bg-slate-900">Get Started</Button>
               <p>
-                <Badge>0 </Badge> Students enroll
+                <Badge>{course?.enrolledStudents?.length || 0}</Badge> Students
               </p>
             </div>
           </div>
-          <div className="bg-amber-100 rounded-3xl">
+          <div className="rounded-3xl overflow-hidden shadow-lg">
             <img
               src={course?.courseThumbnail}
-              className="object-contain rounded-3xl"
-              alt=""
+              className="w-full object-cover max-h-80"
+              alt="Course Thumbnail"
             />
           </div>
         </div>
-      </div>
-      <div className="h-100 w-[85%] px-20 py-10 mb-28 flex gap-10 ">
-        <div className="">
-          <div className="mb-5">
-            <Card className="w-[700px] h-100 bg-zinc-100 ">
-              <CardHeader>
-                <CardTitle>
-                  <h1 className="text-2xl">Descrption</h1>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>{course?.description}</CardContent>
-              <CardFooter>
-                <p>@createdBy {course?.creater?.name || "no User"} </p>
-              </CardFooter>
-            </Card>
-          </div>
-          <div>
-            <Card className="w-[700px] bg-zinc-100 mb-5">
-              <CardHeader>
-                <CardTitle>
-                  <h1 className="text-2xl">Course content</h1>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col gap-2">
-                  {course.lectures.map((lecture, index) => (
-                    <div
-                      key={lecture._id}
-                      className="bg-slate-300 h-14 flex items-center gap-6 px-4 rounded-lg"
-                    >
-                      <div>
-                        <FaRegCirclePlay className="text-xl" />
-                      </div>
-                      <div className="font-bold">{lecture.lectureTitle}</div>
-                    </div>
-                  ))}
+      </section>
+
+      {/* Content Section */}
+      <section className="w-full max-w-7xl px-6 md:px-20 py-12 grid lg:grid-cols-3 gap-10">
+        {/* Left Content */}
+        <div className="lg:col-span-2 space-y-8">
+          {/* Description */}
+          <Card className="bg-zinc-100">
+            <CardHeader>
+              <CardTitle>Description</CardTitle>
+            </CardHeader>
+            <CardContent>{course?.description}</CardContent>
+            <CardFooter>
+              <p>@createdBy {course?.creator?.name || "Unknown"}</p>
+            </CardFooter>
+          </Card>
+
+          {/* Course Content */}
+          <Card className="bg-zinc-100">
+            <CardHeader>
+              <CardTitle>Course Content</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {course?.lectures?.map((lecture) => (
+                <div
+                  key={lecture._id}
+                  className="bg-slate-300 h-14 flex items-center gap-4 px-4 rounded-lg"
+                >
+                  <FaRegCirclePlay className="text-xl" />
+                  <span className="font-semibold">{lecture.lectureTitle}</span>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-          <div className="mb-10">
-            <Card className=" bg-zinc-100 ">
-              <CardHeader>
-                <CardTitle>
-                  <h1 className="text-2xl">Instructor</h1>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className=" flex items-center gap-5">
-                  <div>
-                    <Avatar className="w-32 h-32">
-                      <AvatarImage
-                        src={
-                          course.creator.avatar ||
-                          "https://github.com/shadcn.png"
-                        }
-                      />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                  </div>
-                  <div className="">
-                    <p className="font-bold text-lg">
-                      {course?.creator?.name.toUpperCase() || "No mane"}
-                    </p>
-                    <p className="font-medium">{"Advance Educator"}</p>
-                    <p className="text-sm">
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                      Iusto
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Instructor Info */}
+          <Card className="bg-zinc-100">
+            <CardHeader>
+              <CardTitle>Instructor</CardTitle>
+            </CardHeader>
+            <CardContent className="flex items-center gap-5">
+              <Avatar className="w-20 h-20">
+                <AvatarImage
+                  src={course?.creator?.avatar || "https://github.com/shadcn.png"}
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="font-bold text-lg">
+                  {course?.creator?.name?.toUpperCase() || "No Name"}
+                </p>
+                <p className="font-medium">Advance Educator</p>
+                <p className="text-sm text-gray-600">
+                  Passionate about helping students achieve their goals.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-        <div>
-          <Card className="w-2xs bg-zinc-100 ">
+
+        {/* Sidebar */}
+        <div className="space-y-8">
+          <Card className="bg-zinc-100">
             <CardHeader>
               <CardTitle>
-                <h1 className="text-2xl">₹{course.coursePrice}</h1>
+                <h1 className="text-2xl">₹{course?.coursePrice}</h1>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div>
-                <Button
-                  className="w-full mb-5"
-                  onClick={(e) => handlePayment()}
-                >
-                  Buy Now
-                </Button>
-                <div className="flex flex-col gap-5">
-                  <div className="flex items-center justify-between">
-                    <p className="font-bold">Enrolled</p>
-                    <p className="bg-green-100 text-green-500 px-8 rounded-2xl">
-                      {course.enrolledStudents.length}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="font-bold">Lectures</p>
-                    <p className="bg-green-100 text-green-500 px-8 rounded-2xl">
-                      {course.lectures.length}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="font-bold">Skill level</p>
-                    <p className="bg-green-100 text-green-500 px-8 rounded-2xl">
-                      {course.courseLevel}
-                    </p>
-                  </div>
+              <Button className="w-full mb-5" onClick={() => handlePayment()}>
+                Buy Now
+              </Button>
+              <div className="space-y-4 text-sm">
+                <div className="flex justify-between">
+                  <span className="font-semibold">Enrolled</span>
+                  <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full">
+                    {course?.enrolledStudents?.length || 0}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-semibold">Lectures</span>
+                  <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full">
+                    {course?.lectures?.length || 0}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-semibold">Skill Level</span>
+                  <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full">
+                    {course?.courseLevel}
+                  </span>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <div className="mt-10">
-            <Card className="w-auto bg-zinc-100 ">
+
+          {/* Preview Video */}
+          {course?.lectures?.length > 0 && (
+            <Card className="bg-zinc-100">
               <CardHeader>
-                <CardTitle>
-                  <h1 className="text-2xl">Lecture Video</h1>
-                </CardTitle>
+                <CardTitle>Lecture Preview</CardTitle>
               </CardHeader>
               <CardContent>
                 <ReactPlayer
-                  src={course?.lectures[0]?.videoUrl}
+                  url={course?.lectures[0]?.videoUrl}
                   controls={true}
-                  config={{
-                    youtube: {
-                      color: "white",
-                    },
-                  }}
+                  width="100%"
+                  height="200px"
                 />
               </CardContent>
-              <CardFooter>
-                <p>@createdBy {course?.creater?.name || "no User"} </p>
-              </CardFooter>
             </Card>
-          </div>
+          )}
         </div>
-      </div>
+      </section>
     </div>
   );
 };

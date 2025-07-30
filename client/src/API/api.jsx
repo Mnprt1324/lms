@@ -149,3 +149,10 @@ export const functionToMarkCompelete = (courseId) => {
 export const functionTMarkInComplete = (courseId) => {
   return api.get(`progress/${courseId}/incomplete`);
 };
+
+
+export const functionTogetFiltredCourse=(data)=>{
+return api.post(`/course/course-filter/a`,{data},{
+  withCredentials:true
+})
+}

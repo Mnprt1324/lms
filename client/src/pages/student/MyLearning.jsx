@@ -1,15 +1,18 @@
+import { useSelector } from "react-redux";
 import { CourseCard } from "./CourseCard";
 
 export const MyLearning = () => {
   const isLoading = false;
+   const user = useSelector((state) => state.auth.user);
+   console.log(user)
   return (
     <div className="max-w-4xl mx-auto my-10 px-4 md:px-0">
       <h1 className="text-2xl font-bold"> MyLearning</h1>
       <div className="my-5">{isLoading ? <MyLearningSkeleton /> :(
        <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
          {
-         [1,2,3].map((coures,index)=>(
-            <CourseCard key={index}/>
+         user.enrollCourses.map((course,index)=>(
+            <CourseCard course={course} key={course._id}/>
          ))
          }   
        </div>

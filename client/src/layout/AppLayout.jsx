@@ -1,6 +1,7 @@
 import { Outlet, useNavigation } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { LoaderA } from "@/components/LoaderA";
+import {Footer} from "@/pages/home/Footer";
 
 const AppLayout = () => {
   const navigating = useNavigation();
@@ -16,6 +17,7 @@ const AppLayout = () => {
         <>
           <Navbar />
           <Outlet />
+          <Footer/>
         </>
       )}
     </>

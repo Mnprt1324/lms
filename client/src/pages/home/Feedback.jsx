@@ -43,7 +43,7 @@ function CarouselFeedback() {
             key={index}
             className="md:basis-1/2 lg:basis-1/3 flex justify-center"
           >
-            <div className="p-2 flex flex-col gap-4 ">
+            <div className=" flex flex-col gap-4 ">
               {/* Feedback box with arrow */}
               <div className="relative bg-white dark:bg-gray-900 shadow-md rounded-xl p-5 w-96 border-1">
                 <p className="text-sm text-gray-700 dark:text-gray-300 border-l-4 pl-4">
@@ -78,8 +78,6 @@ function CarouselFeedback() {
         ))}
       </CarouselContent>
 
-      <CarouselPrevious className="" />
-      <CarouselNext className="" />
     </Carousel>
   );
 }

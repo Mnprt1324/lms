@@ -9,7 +9,10 @@ export const Courses = () => {
   return (
     <div className="bg-gray-50">
       <div className="max-w-7xl mx-auto p-6">
-        <h1 className="text-center text-3xl font-medium mb-10">Our Courses</h1>
+        <div className="flex items-center gap-3 mb-8 flex-col">
+        <h1 className=" text-3xl font-medium ">Our Courses</h1>
+         <div className="w-[120px] h-1 bg-blue-500 rounded-full"></div>
+        </div>
         <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {isPending
             ? Array.from({ length: 8 }).map((_, index) => (

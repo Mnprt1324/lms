@@ -35,11 +35,11 @@ module.exports.registerUser = async (req, res) => {
 
 module.exports.loginUser = async (req, res) => {
     try {
-          const {error,value}=loginSchema.validate(req.body,{
-            abortEarly:false,
-            stripUnknown:true
-          })
-         if (error) {
+        const { error, value } = loginSchema.validate(req.body, {
+            abortEarly: false,
+            stripUnknown: true
+        })
+        if (error) {
             const errorMessages = error.details.map((d) => d.message);
             return res.status(400).json({ errors: errorMessages });
         }
@@ -81,7 +81,17 @@ module.exports.logOutUser = async (req, res) => {
 module.exports.getUserProfile = async (req, res) => {
     try {
         const userId = req.user;
-        const user = await User.findById(userId).select("-password");
+        const user = await User.findById(userId).populate([
+            {
+                path: "enrollCourses",
+                model: "course",
+                populate:{
+                    path:"creator",
+                    model:"Users"
+                }
+            }
+        ]
+        ).select("-password");
         if (!user) {
             return res.status(404).json({ message: "profile not found" });
         }
@@ -115,7 +125,7 @@ module.exports.updateUserProfile = async (req, res) => {
         }
 
         const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true }).select("-Password");
-        
+
         return res.status(200).json({
             error: false,
             user: updatedUser,
