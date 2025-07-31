@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 
 export const CourseCard = ({ course }) => {
   const { isPending, verifyPayment } = useCheckPaymentVerify(course._id);
- console.log(course)
   const handleOnClick = () => {
     if (!isPending) {
       verifyPayment();

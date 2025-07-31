@@ -122,32 +122,44 @@ module.exports.getAllPublishCourse = async (req, res) => {
 
 module.exports.filterCourse = async (req, res) => {
   try {
-    const { All, sortOrder, selectedCategories } = req.body;
+    const { All, sortOrder, category, searchQuery } = req.body.data;
 
+    // Base filter
     const filter = {
       isPublished: true,
     };
 
-    // If "All" is false and categories are selected
-    if (!All && selectedCategories && selectedCategories.length > 0) {
-      filter.category = { $in: selectedCategories };
+    // Category filter
+    if (!All && category && category.length > 0) {
+      filter.category = { $in: category };
     }
 
-    // Sorting logic
-    let sort = {};
+    // Search filter (title or description)
+    if (searchQuery && searchQuery.trim() !== "") {
+      const regex = new RegExp(searchQuery.trim(), "i"); // case-insensitive regex
+      filter.$or = [
+        { title: { $regex: regex } },
+        { description: { $regex: regex } },
+      ];
+    }
+
+    // Sorting
+    const sort = {};
     if (sortOrder === "0") {
       sort.coursePrice = 1;
     } else if (sortOrder === "1") {
       sort.coursePrice = -1;
     }
 
+    // Fetch courses
     const courses = await Course.find(filter)
       .sort(sort)
       .populate({ path: "creator", select: "name avatar" });
 
     res.status(200).json({ courses, message: "Filtered courses fetched" });
+
   } catch (error) {
-    console.log("filterCourse error:", error);
+    console.error("filterCourse error:", error);
     res.status(500).json({ error: true, message: "Internal server error" });
   }
 };

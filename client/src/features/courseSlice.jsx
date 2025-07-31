@@ -24,7 +24,6 @@ const courseSlice = createSlice({
       state.CourseProgress = action.payload;
     },
     setFilteredCourse: (state, action) => {
-      console.log(action.payload);
       state.filteredCourse = action.payload;
     }
   },
