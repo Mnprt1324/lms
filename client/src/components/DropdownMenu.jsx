@@ -9,27 +9,26 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { NavLink } from "react-router"
+import { NavLink } from "react-router";
 import { functionToLogout } from "../API/api";
-import {useMutation} from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { userLoggedOut } from "../features/userSlice";
 
 export const DropdownMenu2 = () => {
-   const {user}=useSelector((state)=>state.auth)
-  const dispatch= useDispatch();
-  const {mutate}=useMutation({
-    mutationFn:functionToLogout,
-    onSuccess:()=>{
-      console.log("userLogout");
-      dispatch(userLoggedOut())
-
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
+  const dispatch = useDispatch();
+  const { mutate } = useMutation({
+    mutationFn: functionToLogout,
+    onSuccess: () => {
+      dispatch(userLoggedOut());
     },
-    onError:(err)=>{
-      console.log("logout Falied",err)
-    }
-  })
-   const handleLogOut = () => {
+    onError: (err) => {
+      console.log("logout Falied", err);
+    },
+  });
+  const handleLogOut = () => {
     mutate(); // trigger logout
   };
 
@@ -37,7 +36,7 @@ export const DropdownMenu2 = () => {
     <DropdownMenu className="pointer-cursor">
       <DropdownMenuTrigger asChild>
         <Avatar className="w-[36px] h-auto">
-          <AvatarImage  src={user?.avatar||"https://github.com/shadcn.png"} />
+          <AvatarImage src={user?.avatar || "https://github.com/shadcn.png"} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -46,16 +45,24 @@ export const DropdownMenu2 = () => {
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <NavLink to={`/mylearning`}>My Learning</NavLink>
-            </DropdownMenuItem>
+          </DropdownMenuItem>
           <DropdownMenuItem>
-             <NavLink to={`/profile`}>Edit Profile</NavLink>
-           </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleLogOut}>Log out</DropdownMenuItem>
+            <NavLink to={`/profile`}>Edit Profile</NavLink>
+          </DropdownMenuItem>
+          {user.role === "instructor" && (
+            <DropdownMenuItem onClick={handleLogOut}>Log out</DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-           <NavLink to={`/admin/dashboard`}><Button>DashBoard</Button></NavLink>
-          </DropdownMenuItem>
+          {user.role === "instructor" ? (
+            <NavLink to={`/admin/dashboard`}>
+              <Button>DashBoard</Button>
+            </NavLink>
+          ) : (
+            <Button  onClick={handleLogOut}>Log Out</Button>
+          )}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

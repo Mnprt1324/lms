@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 
 export const useGetCourseProgress = (courseId) => {
   const dispatch = useDispatch();
-  const { data, isError, isPending } = useQuery({
+  const { data, isError, isPending ,refetch } = useQuery({
     queryKey: [courseId],
     queryFn: () => functionTogetCoursesProgress(courseId),
    staleTime:1 * 60 * 1000
@@ -14,5 +14,5 @@ export const useGetCourseProgress = (courseId) => {
     dispatch(setCourseProgress(data?.data?.data));
   }
 
-  return { data, isError, isPending };
+  return { data, isError, isPending,refetch };
 };

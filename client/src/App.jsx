@@ -17,9 +17,11 @@ import { EditLecture } from "./pages/admin/lecture/EditLecture";
 import { CourseDetails } from "./pages/admin/course/CourseDetails";
 import { CourseProgress } from "./pages/admin/course/CourseProgress";
 import { CoursesPage } from "./pages/admin/course/CoursesPage";
+import { About } from "./pages/About";
+import { TeachersPage } from "./pages/TeachersPage";
 
 function App() {
-   useGetUserProfile();
+  useGetUserProfile();
 
   const router = createBrowserRouter([
     {
@@ -45,6 +47,14 @@ function App() {
         {
           path: "/courses",
           element: <CoursesPage />,
+        },
+        {
+          path: "/about",
+          element: <About />,
+        },
+        {
+          path: "/instructor",
+          element: <TeachersPage />,
         },
         {
           path: "/admin",

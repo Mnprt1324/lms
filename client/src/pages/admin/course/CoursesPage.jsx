@@ -13,6 +13,16 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { CourseSkeleton } from "@/pages/student/Courses";
 import { useGetFilteredCourse } from "../../../../hooks/useGetFilteredCourse";
+import { Button } from "@/components/ui/button";
+
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { SlidersHorizontal } from "lucide-react";
+import { TopTeachers } from "@/pages/home/TopTeachers";
+import { Accodian } from "@/pages/home/Accodian";
 
 export const CoursesPage = () => {
   const isPending = false;
@@ -41,30 +51,48 @@ export const CoursesPage = () => {
   return (
     <div className="min-h-screen w-full bg-gray-50 overflow-x-hidden">
       {/* Search */}
-      <section className="w-full h-60 flex flex-col items-center justify-center px-4 bg-red-100">
-        <label htmlFor="search-input" className="text-xl font-semibold mb-2">
-          Search
-        </label>
-        <input
-          id="search-input"
-          type="text"
-          onChange={handleOnChange}
-          value={searchQuery}
-          placeholder="Enter course here"
-          className="px-4 py-3 w-full max-w-md text-black border border-black rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-red-300"
-        />
-      </section>
-
+      <div className="relative  bg-gradient-to-r from-[#5567FF] to-[#5567dF] dark:from-gray-800 dark:to-gray-900 py-24 px-4 text-center ">
+        <div className="max-w-3xl mx-auto ">
+          <h1 className="text-white text-4xl font-bold mb-4">
+            Find best courses for You
+          </h1>
+          <p className="text-gray-200 mb-8">
+            All our dreams can come true, if we have the courage to pursue them.
+          </p>
+          <form className="flex items-center bg-white dark:bg-gray-800 rounded-full shadow-lg overflow-hidden max-w-xl mx-auto mb-6">
+            <input
+              id="search-input"
+              type="text"
+              onChange={handleOnChange}
+              value={searchQuery}
+              placeholder="Enter course here"
+              className="px-4 py-3 w-full max-w-md text-black  border-black rounded-md bg-white focus:outline-none focus:ring-0 focus:ring-red-300"
+            />
+          </form>
+        </div>
+      </div>
       {/* Layout */}
       <div className="flex flex-col md:flex-row md:min-h-[calc(100vh-15rem)] border-t px-3 gap-4">
         {/* Sidebar */}
-        <aside className="w-full md:w-[300px] bg-white border p-4 rounded-md">
-          <CheckboxDemo searchQuery={searchQuery} />
+        <aside className="w-full md:w-[300px] md:p-4 rounded-md">
+          <div className="w-full mt-2 visible md:hidden">
+            <Collapsible className="border rounded p-2">
+              <CollapsibleTrigger className="flex-xl gap-3">
+                <SlidersHorizontal />
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <CheckboxDemo searchQuery={searchQuery} />
+              </CollapsibleContent>
+            </Collapsible>
+          </div>
+          <div className="hidden bg-white md:block">
+                <CheckboxDemo searchQuery={searchQuery} />
+          </div>
         </aside>
 
         {/* Main Content */}
         <main className="flex-1 py-5 px-1">
-          <div className="border rounded-lg p-5 bg-white shadow-sm w-full">
+          <div className="border rounded-lg md:p-5 bg-white shadow-sm w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {isPending ? (
                 // Show skeletons while loading
@@ -86,6 +114,8 @@ export const CoursesPage = () => {
           </div>
         </main>
       </div>
+      <TopTeachers/>
+      <Accodian/>
     </div>
   );
 };
@@ -102,7 +132,7 @@ const allCategories = [
   "Fullstack Development",
 ];
 
-export function CheckboxDemo({searchQuery}) {
+export function CheckboxDemo({ searchQuery }) {
   const { mutate, isError, isPending } = useGetFilteredCourse();
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sortOrder, setSortOrder] = useState(0);
@@ -124,10 +154,15 @@ export function CheckboxDemo({searchQuery}) {
 
   const isAllSelected = selectedCategories.length === allCategories.length;
   useEffect(() => {
-    mutate({ All: isAllSelected, sortOrder, category: selectedCategories,searchQuery });
-  }, [isAllSelected, sortOrder, selectedCategories,searchQuery]);
+    mutate({
+      All: isAllSelected,
+      sortOrder,
+      category: selectedCategories,
+      searchQuery,
+    });
+  }, [isAllSelected, sortOrder, selectedCategories, searchQuery]);
   return (
-    <div className="flex flex-col gap-6 px-5 rounded-lg pt-5 pb-7 border">
+    <div className="flex flex-col gap-6 px-5 rounded-lg pt-5 pb-7 md:border">
       <div>
         <Label className="mb-2 block">Sort by Price</Label>
         <Select onValueChange={setSortOrder}>

@@ -16,7 +16,7 @@ export const CourseCard = ({ course }) => {
 
   return (
     <Card
-      className=" pt-0 gap-5 overflow-hidden rounded-lg dark:bg-gray-800 bg-white shadow hover:shadow-xl hover:scale-[1.01] transition-all duration-200 cursor-pointer w-full max-w-[300px] mx-auto"
+      className="  pt-0 gap-5 overflow-hidden rounded-lg dark:bg-gray-800 bg-white shadow hover:shadow-xl hover:scale-[1.01] transition-all duration-200 cursor-pointer w-full max-w-[370px] mx-auto"
       onClick={handleOnClick}
     >
       {/* Thumbnail */}

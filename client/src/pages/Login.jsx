@@ -69,13 +69,13 @@ export function Login() {
     if(!(data.data.error)){
       dispatch(userLoggedIn(data.data.user))
        navigate("/")
-      toast(data.data.message);
+      toast.error(data.data.message);
     }
     loginForm.reset();
   },
   onError: (error) => {
     console.log(error.response.data.message)
-    toast(error.response.data.message ||error.response.data.errors[0]);
+    toast.error(error.response.data.message ||error.response.data.errors[0]);
     console.error("Login Error:", error);
   },
 });
@@ -85,7 +85,7 @@ export function Login() {
   onSuccess: (data) => {
     console.log("Signup Success:", data);
       if(!(data.data.error)){
-      toast(data.data.message);
+      toast.success(data.data.message);
     }
     signupForm.reset();
   },

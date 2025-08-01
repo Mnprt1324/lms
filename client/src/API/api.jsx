@@ -1,4 +1,5 @@
 import axios from "axios";
+import { data } from "react-router-dom";
 
 const api = axios.create({
   baseURL: "http://localhost:4000",
@@ -11,7 +12,7 @@ export const functionToLogin = async (data) => {
   return await api.post("/user/login", data, { withCredentials: true });
 };
 export const functionToLogout = async () => {
-  return await api.post("/user/logout", { withCredentials: true });
+  return await api.post("/user/logout",{},{ withCredentials: true });
 };
 export const functionToGetProfile = async () => {
   const res = await api.get("/user/getprofile", { withCredentials: true });
@@ -138,21 +139,41 @@ export const functionToPayUpdateStatus = (data) => {
 };
 
 export const functionTogetCoursesProgress = (courseId) => {
-  return api.get(`/progress/${courseId}`);
+  return api.get(`/progress/${courseId}`,{
+    withCredentials:true
+  });
 };
 export const functionTogetUpdatePrgress = ({ courseId, lectureId }) => {
-  return api.post(`progress/${courseId}/lecture/${lectureId}`);
+  return api.post(`progress/${courseId}/lecture/${lectureId}`,{},{
+    withCredentials:true
+  });
 };
-export const functionToMarkCompelete = (courseId) => {
-  return api.get(`progress/${courseId}/complete`);
-};
-export const functionTMarkInComplete = (courseId) => {
-  return api.get(`progress/${courseId}/incomplete`);
+export const functionToMarkCompelete = (data) => {
+  const { courseId, isComplete } = data;
+  return api.post(
+    `progress/${courseId}/iscomplete`,
+    { isComplete },
+    { withCredentials: true }
+  );
 };
 
+export const functionTogetFiltredCourse = (data) => {
+  return api.post(
+    `/course/course-filter/a`,
+    { data },
+    {
+      withCredentials: true,
+    }
+  );
+};
 
-export const functionTogetFiltredCourse=(data)=>{
-return api.post(`/course/course-filter/a`,{data},{
-  withCredentials:true
-})
-}
+export const functionToCreateCommnet = (data) => {
+  const { lectureId, comment } = data;
+  return api.post(
+    `/comment/${lectureId}/create`,
+    { comment },
+    {
+      withCredentials: true,
+    }
+  );
+};

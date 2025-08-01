@@ -48,8 +48,8 @@ export const Navbar = () => {
 
         <NavLink to="/">Home</NavLink>
         <NavLink to="/courses">Courses</NavLink>
-        <NavLink to="">Teachers</NavLink>
-        <NavLink to="">About Us</NavLink>
+        <NavLink to="/instructor">Our Instructors</NavLink>
+        <NavLink to="/about">About Us</NavLink>
        
       </div>
       <div>

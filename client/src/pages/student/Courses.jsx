@@ -8,7 +8,7 @@ export const Courses = () => {
  
   return (
     <div className="bg-gray-50">
-      <div className="max-w-7xl mx-auto p-6">
+      <div className="max-w-7xl mx-auto">
         <div className="flex items-center gap-3 mb-8 flex-col">
         <h1 className=" text-3xl font-medium ">Our Courses</h1>
          <div className="w-[120px] h-1 bg-blue-500 rounded-full"></div>
