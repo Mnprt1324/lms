@@ -22,7 +22,7 @@ export const useMakePayment = (courseId) => {
 
       // 2. Razorpay options
       const options = {
-        key: "rzp_test_n4AxeVBg1w6Rqk",
+        key: import.meta.env.VITE_RZP_SERET,
         amount: order.amount,
         currency: order.currency,
         name: "Test App",

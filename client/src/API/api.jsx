@@ -1,8 +1,8 @@
 import axios from "axios";
-import { data } from "react-router-dom";
+
 
 const api = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: import.meta.env.VITE_BASE_URL,
 });
 
 export const functionToSignup = async (data) => {
