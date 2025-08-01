@@ -1,10 +1,12 @@
 import axios from "axios";
 
-
+ const base =import.meta.env.VITE_BASE_URL;
+ console.log(base);
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL:"http://localhost:4000",
 });
 
+console.log(import.meta.env.VITE_BASE_URL);
 export const functionToSignup = async (data) => {
   return await api.post("/user/register", data, { withCredentials: true });
 };

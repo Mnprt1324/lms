@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 export const Courses = () => {
   const {isError,isPending}= useGetPublicCourse();
   const Allcourses=useSelector((state)=>state.course.allPublicCourse)
- 
+  console.log(isError)
   return (
     <div className="bg-gray-50">
       <div className="max-w-7xl mx-auto">
@@ -18,7 +18,7 @@ export const Courses = () => {
             ? Array.from({ length: 8 }).map((_, index) => (
                 <CourseSkeleton key={index} />
               ))
-            : Allcourses.map((course, index) => <CourseCard key={index} course={course} />)}
+            : Allcourses?.map((course, index) => <CourseCard key={index} course={course} />)}
         </div>
       </div>
     </div>

@@ -1,9 +1,9 @@
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../../components/ui/button";
-import { CourseTab } from "./courseTab";
 import { ArrowLeft } from "lucide-react";
 import { useGetCourseById } from "../../../../hooks/useGetCourseById";
 import { useSelector } from "react-redux";
+import { CourseTaab } from "./CourseTaab";
 export const EditCourse = () => {
   const { courseId } = useParams();
   const {isPending,isError} = useGetCourseById(courseId);
@@ -40,7 +40,7 @@ export const EditCourse = () => {
           </Button>
         </NavLink>
       </div>
-      <CourseTab course={course} />
+      <CourseTaab course={course} />
     </div>
   );
 };

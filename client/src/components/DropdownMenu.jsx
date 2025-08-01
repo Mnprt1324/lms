@@ -49,13 +49,13 @@ export const DropdownMenu2 = () => {
           <DropdownMenuItem>
             <NavLink to={`/profile`}>Edit Profile</NavLink>
           </DropdownMenuItem>
-          {user.role === "instructor" && (
+          {user?.role === "instructor" && (
             <DropdownMenuItem onClick={handleLogOut}>Log out</DropdownMenuItem>
           )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          {user.role === "instructor" ? (
+          {user?.role === "instructor" ? (
             <NavLink to={`/admin/dashboard`}>
               <Button>DashBoard</Button>
             </NavLink>

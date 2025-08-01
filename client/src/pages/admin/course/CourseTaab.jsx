@@ -34,7 +34,7 @@ import { functionToEditCourse, functionToPublishCourse } from "@/API/api";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { Loader } from "@/components/ui/Loader";
-export const CourseTab = ({ course }) => {
+export const CourseTaab = ({ course }) => {
   const { courseId } = useParams();
   const navigate = useNavigate();
   console.log(course);
