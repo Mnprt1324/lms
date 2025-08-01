@@ -10,6 +10,7 @@ const userRouter = require("./routers/user.router");
 const courseRouter = require("./routers/course.router");
 const mediaRouter = require("./routers/media.routes")
 const progressRouter = require("./routers/courseProgress.routes")
+const commentRouter = require("./routers/commnet.routes")
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use("/user", userRouter);
 app.use("/course", courseRouter);
 app.use("/media", mediaRouter)
 app.use("/progress", progressRouter)
+app.use("/comment", commentRouter)
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

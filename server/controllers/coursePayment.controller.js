@@ -71,7 +71,7 @@ module.exports.updatePurchaseCourse = async (req, res) => {
             user.enrollCourses.push(CoursePur.courseId);
         }
 
-         await course.save();
+        await course.save();
         await user.save();
         await CoursePur.save();
         return res.status(200).json({ message: "Payment Done" });
@@ -85,19 +85,19 @@ module.exports.verifyPayment = async (req, res) => {
     try {
         const { courseId } = req.params;
         const userId = req.user;
-        const purchaseCours = await CoursePurchase.findOne({ courseId });
+        const purchaseCours = await CoursePurchase.findOne({ userId,courseId, status: "completed" });
         if (!purchaseCours) {
             return res.status(200).json({ success: false, message: "no purchase Course found" })
         }
-        // const sign = razorpay_order_id + "|" + razorpay_payment_id;
-        // const expectedSign = crypto
-        //     .createHmac("sha256", process.env.rzp_key_secret)
-        //     .update(sign.toString())
-        //     .digest("hex");
+        const sign = purchaseCours.orderId + "|" + purchaseCours.paymentId;
+        const expectedSign = crypto
+            .createHmac("sha256", process.env.rzp_key_secret)
+            .update(sign.toString())
+            .digest("hex");
 
-        // if (expectedSign !== razorpay_signature) {
-        //     res.status(400).json({ success: false, message: "Payment verification failed" });
-        // }
+        if (expectedSign !== purchaseCours.paymentSignature) {
+            res.status(400).json({ success: false, message: "Payment verification failed" });
+        }
         res.status(200).json({ success: true, message: "Payment verified" });
     } catch (error) {
         console.log("verifyPayment", error)

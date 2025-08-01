@@ -68,9 +68,16 @@ module.exports.loginUser = async (req, res) => {
 
 module.exports.logOutUser = async (req, res) => {
     try {
-        res.clearCookie("token");
-        res.status(200).json({ error: false, message: "logout successfully" })
+        const { token } = req.cookies;
+        if (token) {
+            res.clearCookie("token", {
+                httpOnly: true,
+                sameSite: "strict",
+            });
+            res.status(200).json({ error: false, message: "logout successfully" })
 
+        }
+        res.status(200).json({ error: false, message: "logout successfully" })
     } catch (error) {
         console.log("error in logOutUser:", error);
         res.status(500).json({ error: true, message: 'internal server error' });
@@ -85,9 +92,9 @@ module.exports.getUserProfile = async (req, res) => {
             {
                 path: "enrollCourses",
                 model: "course",
-                populate:{
-                    path:"creator",
-                    model:"Users"
+                populate: {
+                    path: "creator",
+                    model: "Users"
                 }
             }
         ]

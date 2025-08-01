@@ -9,6 +9,11 @@ const lectureSchema = new mongoose.Schema({
   videoUrl: { type: String },
   publicId: { type: String },
   isPreviewFree: { type: Boolean },
+  comments:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Comment"
+  }
+  ]
 },{timestamps:true});
 
  const Lecture = mongoose.model("Lecture", lectureSchema);
