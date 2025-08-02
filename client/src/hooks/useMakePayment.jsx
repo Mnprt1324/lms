@@ -1,7 +1,7 @@
 import { useRazorpay } from "react-razorpay";
-import { functionToCreateOrder, functionToPayUpdateStatus, functionToVerifyPayment } from "../src/API/api";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { functionToCreateOrder, functionToPayUpdateStatus } from "@/API/api";
 
 export const useMakePayment = (courseId) => {
   const { Razorpay } = useRazorpay();
