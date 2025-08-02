@@ -27,7 +27,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { functionToLogin, functionToSignup } from "../API/api"
 import { useMutation } from "@tanstack/react-query"
-import { loginSchema, signupSchema } from "../validation/userValidation"
+import { loginSchema, signupSchema } from "@/validation/userValidation"
 // import {toast} from '../components/ui/sonner'
 import { toast } from "sonner"
 import { useDispatch } from "react-redux"

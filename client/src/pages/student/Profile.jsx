@@ -23,8 +23,8 @@ import { CourseCard } from "./CourseCard";
 import { useMutation } from "@tanstack/react-query";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { functionToUpdateProfile } from "../../API/api";
-import { profileSchema } from "../../validation/userValidation";
+import { functionToUpdateProfile } from "@/API/api";
+import { profileSchema } from "@/validation/userValidation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
