@@ -10,7 +10,7 @@ import { SideBar } from "./pages/admin/SideBar";
 import { CouresTable } from "./pages/admin/course/CouresTable";
 import { CreateCourse } from "./pages/admin/course/CreateCourse";
 import { EditCourse } from "./pages/admin/course/EditCourse";
-import { useGetUserProfile } from "../hooks/useGetUserProfile";
+import { useGetUserProfile } from "@/hooks/useGetUserProfile";
 
 import { CreateLecture } from "./pages/admin/lecture/CreateLecture";
 import { EditLecture } from "./pages/admin/lecture/EditLecture";
