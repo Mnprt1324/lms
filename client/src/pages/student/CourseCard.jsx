@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { useCheckPaymentVerify } from "../../../hooks/useCheckPaymentVerify";
+import { useCheckPaymentVerify } from "@/hooks/useCheckPaymentVerify";
 import { FaStar } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 

@@ -1,4 +1,4 @@
-import { useGetCourseProgress } from "../../../../hooks/useGetCourseProgress";
+
 import ReactPlayer from "react-player";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -11,11 +11,15 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { useCreateCommnet } from "../../../../hooks/useCreateCommnet";
+
 import { Badge } from "@/components/ui/badge";
 import { CircleCheckBig, CirclePlay } from "lucide-react";
-import { useMarkIsComplete } from "../../../../hooks/useMarkIsComplete";
-import { useUpdateProgress } from "../../../../hooks/useUpdateProgress";
+import { useGetCourseProgress } from "@/hooks/useGetCourseProgress";
+import { useCreateCommnet } from "@/hooks/useCreateCommnet";
+import { useMarkIsComplete } from "@/hooks/useMarkIsComplete";
+import { useUpdateProgress } from "@/hooks/useUpdateProgress";
+
+
 
 export const CourseProgress = () => {
   const { courseId } = useParams();

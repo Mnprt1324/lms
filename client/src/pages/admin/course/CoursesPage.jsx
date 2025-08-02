@@ -12,8 +12,6 @@ import { CourseCard } from "@/pages/student/CourseCard";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { CourseSkeleton } from "@/pages/student/Courses";
-import { useGetFilteredCourse } from "../../../../hooks/useGetFilteredCourse";
-import { Button } from "@/components/ui/button";
 
 import {
   Collapsible,
@@ -23,6 +21,7 @@ import {
 import { SlidersHorizontal } from "lucide-react";
 import { TopTeachers } from "@/pages/home/TopTeachers";
 import { Accodian } from "@/pages/home/Accodian";
+import { useGetFilteredCourse } from "@/hooks/useGetFilteredCourse";
 
 export const CoursesPage = () => {
   const isPending = false;

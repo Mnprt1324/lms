@@ -1,4 +1,4 @@
-import { Button } from "../../components/ui/button";
+import { Button } from "@/components/ui/button";
 export const HeroSection = () => {
   return (
     <div className="relative  bg-gradient-to-r from-[#5567FF] to-[#5567dF] dark:from-gray-800 dark:to-gray-900 py-24 px-4 text-center ">

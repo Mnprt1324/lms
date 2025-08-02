@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { CourseCard } from "./CourseCard";
-import { useGetPublicCourse } from "../../../hooks/useGetPublicCourse";
+import { useGetPublicCourse } from "@/hooks/useGetPublicCourse";
 import { useSelector } from "react-redux";
 export const Courses = () => {
   const {isError,isPending}= useGetPublicCourse();

@@ -1,19 +1,16 @@
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useGetCourseById } from "../../../../hooks/useGetCourseById";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import ReactPlayer from "react-player";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useMakePayment } from "../../../../hooks/useMakePayment";
+
 import { LoaderA } from "@/components/LoaderA";
 import {
   Collapsible,
@@ -21,6 +18,8 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Lock, LockKeyhole } from "lucide-react";
+import { useGetCourseById } from "@/hooks/useGetCourseById";
+import { useMakePayment } from "@/hooks/useMakePayment";
 
 export const CourseDetails = () => {
   const { courseId } = useParams();

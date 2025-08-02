@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardContent,
   CardHeader,
-} from "../../../components/ui/card";
+} from "@/components/ui/card";
 import {
   FormControl,
   FormField,

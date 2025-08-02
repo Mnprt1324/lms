@@ -12,8 +12,8 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Edit } from "lucide-react";
-import { useGetCourse } from "../../../../hooks/useGetCourse";
 import { useSelector } from "react-redux";
+import { useGetCourse } from "@/hooks/useGetCourse";
 export const CouresTable = () => {
   const { isPending, isError } = useGetCourse();
   const navigate = useNavigate();

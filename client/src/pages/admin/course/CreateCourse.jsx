@@ -20,13 +20,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { addCourseSchema } from "../../../validation/userValidation";
-import { Button } from "../../../components/ui/button";
+
+
 import { useMutation } from "@tanstack/react-query";
-import { functionTocreateCourse } from "../../../API/api";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { functionTocreateCourse } from "@/API/api";
+import { addCourseSchema } from "@/validation/userValidation";
+import { Button } from "@/components/ui/button";
  
 export const CreateCourse = () => {
   const form = useForm({

@@ -1,9 +1,10 @@
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { Button } from "../../../components/ui/button";
+
 import { ArrowLeft } from "lucide-react";
-import { useGetCourseById } from "../../../../hooks/useGetCourseById";
 import { useSelector } from "react-redux";
 import { CourseTaab } from "./CourseTaab";
+import { useGetCourseById } from "@/hooks/useGetCourseById";
+import { Button } from "@/components/ui/button";
 export const EditCourse = () => {
   const { courseId } = useParams();
   const {isPending,isError} = useGetCourseById(courseId);
