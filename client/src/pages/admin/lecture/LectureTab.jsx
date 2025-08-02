@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
+import { useGetLectureById } from "@/hooks/useGetLectureById";
 import { lectureEditSchema } from "@/validation/userValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -29,7 +30,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { useGetLectureById } from "@/hooks/usegetLectureById";
 export const LectureTab = () => {
   const navigate=useNavigate();
   const { courseId, lectureId } = useParams();
