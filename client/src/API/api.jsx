@@ -1,9 +1,10 @@
 import axios from "axios";
+import { data } from "react-router-dom";
 
- const base =import.meta.env.VITE_BASE_URL;
- console.log(base);
+const base = import.meta.env.VITE_BASE_URL;
+console.log(base);
 const api = axios.create({
-  baseURL:"http://localhost:4000",
+  baseURL: "http://localhost:4000",
 });
 
 console.log(import.meta.env.VITE_BASE_URL);
@@ -14,7 +15,7 @@ export const functionToLogin = async (data) => {
   return await api.post("/user/login", data, { withCredentials: true });
 };
 export const functionToLogout = async () => {
-  return await api.post("/user/logout",{},{ withCredentials: true });
+  return await api.post("/user/logout", {}, { withCredentials: true });
 };
 export const functionToGetProfile = async () => {
   const res = await api.get("/user/getprofile", { withCredentials: true });
@@ -141,14 +142,18 @@ export const functionToPayUpdateStatus = (data) => {
 };
 
 export const functionTogetCoursesProgress = (courseId) => {
-  return api.get(`/progress/${courseId}`,{
-    withCredentials:true
+  return api.get(`/progress/${courseId}`, {
+    withCredentials: true,
   });
 };
 export const functionTogetUpdatePrgress = ({ courseId, lectureId }) => {
-  return api.post(`progress/${courseId}/lecture/${lectureId}`,{},{
-    withCredentials:true
-  });
+  return api.post(
+    `progress/${courseId}/lecture/${lectureId}`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
 };
 export const functionToMarkCompelete = (data) => {
   const { courseId, isComplete } = data;
@@ -178,4 +183,16 @@ export const functionToCreateCommnet = (data) => {
       withCredentials: true,
     }
   );
+};
+
+export const funcTOGetAllPurchasedCourse = () => {
+  return api.get("/course/purchased/aa", { withCredentials: true });
+};
+
+export const functionToPostFeedBack = (data) => {
+  return api.post("/feedback/", { data }, { withCredentials: true });
+};
+export const functionToGetFeedBack =async () => {
+  const res=await api.get("/feedback/", { withCredentials: true });
+  return res.data.allFeedBack;
 };

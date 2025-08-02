@@ -60,8 +60,8 @@ export const CreateCourse = () => {
   };
 
   return (
-    <div className="flex mx-10 flex-col">
-      <div className="mb-5 flex gap-5 items-center">
+    <div className="flex  md:mx-10 flex-col">
+      <div className="mb-5 flex-col items-start  flex md:flex-row  gap-5 md:items-center">
          <Button
           size="icon"
           variant="outline"

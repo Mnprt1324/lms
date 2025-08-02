@@ -19,6 +19,7 @@ import { CourseProgress } from "./pages/admin/course/CourseProgress";
 import { CoursesPage } from "./pages/admin/course/CoursesPage";
 import { About } from "./pages/About";
 import { TeachersPage } from "./pages/TeachersPage";
+import { Error } from "./pages/home/Error";
 
 function App() {
   useGetUserProfile();
@@ -55,6 +56,10 @@ function App() {
         {
           path: "/instructor",
           element: <TeachersPage />,
+        },
+        {
+          path:"*",
+          element:<Error/>
         },
         {
           path: "/admin",

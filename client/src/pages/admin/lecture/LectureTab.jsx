@@ -3,6 +3,7 @@ import {
   functionToRemoveLecture,
   functionToUploadViedo,
 } from "@/API/api";
+import { LoaderA } from "@/components/LoaderA";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,14 +27,14 @@ import { useGetLectureById } from "@/hooks/useGetLectureById";
 import { lectureEditSchema } from "@/validation/userValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 export const LectureTab = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const { courseId, lectureId } = useParams();
-    const {lecture,isPending,isError} =useGetLectureById(lectureId)
+  const { lecture, isPending, isError } = useGetLectureById(lectureId);
   const [uploadFile, setUploadFile] = useState(null);
   const [uploadFileRes, setUploadFileRes] = useState(null);
   const [mediaProgress, setMediaProgress] = useState(false);
@@ -41,11 +42,20 @@ export const LectureTab = () => {
   const form = useForm({
     resolver: zodResolver(lectureEditSchema),
     defaultValues: {
-      lectureTitle:lecture?.lectureTitle|| "" ,
+      lectureTitle: "",
       isPreviewFree: false,
     },
   });
-console.log(lecture)
+
+  useEffect(() => {
+    if (lecture) {
+      form.reset({
+        lectureTitle: lecture?.lectureTitle,
+        isPreviewFree: false,
+      });
+    }
+  }, [lecture]);
+
   const uploadVideo = useMutation({
     mutationFn: ({ formData, onProgress }) => {
       return functionToUploadViedo({ formData, onProgress });
@@ -62,7 +72,7 @@ console.log(lecture)
     },
     onError: (error) => {
       console.log(error);
-      toast.error(error.data.message||"error while Upload");
+      toast.error(error.data.message || "error while Upload");
     },
   });
 
@@ -89,16 +99,16 @@ console.log(lecture)
       console.log(error);
     }
   };
+
   const editLecture = useMutation({
     mutationFn: functionToEditLecture,
     onSuccess: (data) => {
-      console.log("data:", data);
       if (data.data.message) {
         toast.success(data?.data.message || "Lecture updated successfully.");
       }
     },
     onError: (error) => {
-      console.log(error);
+      toast.error(error?.data.data.message || "something went wrong");
     },
   });
 
@@ -113,7 +123,7 @@ console.log(lecture)
     onSuccess: (data) => {
       console.log(data);
       toast.success(data.data.message);
-      navigate(-1);      
+      navigate(-1);
     },
     onError: (error) => {
       console.log("error:", error);
@@ -121,24 +131,26 @@ console.log(lecture)
     },
   });
   const handleLectureRemove = (e) => {
-    console.log("lecture remove");
     removeLecture.mutate({ lectureId });
   };
 
+  if (isPending) {
+    return <LoaderA />;
+  }
   return (
     <Card>
       <CardHeader>
-        <div>
+        <div className="flex items-center justify-between">
           <CardTitle>Edit Lecture</CardTitle>
-          <CardDescription>
-            Make changes and click save when done.
-          </CardDescription>
           <div className="flex items-center gap-2">
             <Button variant="destructive" onClick={handleLectureRemove}>
               Remove Lecture
             </Button>
           </div>
         </div>
+        <CardDescription>
+          Make changes and click save when done.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -162,7 +174,7 @@ console.log(lecture)
             />
 
             {/* Lecture Video */}
-            <div className="flex items-center gap-5">
+            <div className="md:flex items-center gap-5">
               <FormField
                 name="lectureVideo"
                 render={({ field }) => (
@@ -208,7 +220,13 @@ console.log(lecture)
             />
 
             <div>
-              <Button type="submit">Save</Button>
+              <Button
+                disabled={uploadFile ? false : true}
+                className={"cursor-pointer"}
+                type="submit"
+              >
+                Save
+              </Button>
             </div>
           </form>
         </Form>

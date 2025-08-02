@@ -144,3 +144,18 @@ module.exports.updateUserProfile = async (req, res) => {
         res.status(500).json({ error: true, message: 'internal server error' });
     }
 }
+
+
+module.exports.getAllInstructor = async (req, res) => {
+    try {
+        
+        const instructor = await User.find({role:"instructor"})
+        if (!instructor) {
+            return res.status(404).json({ message: "instructors not found" });
+        }
+        return res.status(200).json({ instructor, message: "instructor profile fetch" })
+    } catch (error) {
+        console.log("error getAllInstructor", error);
+        res.status(500).json({ error: true, message: 'internal server error' });
+    }
+}

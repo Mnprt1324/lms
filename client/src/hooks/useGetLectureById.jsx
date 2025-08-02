@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 
 export const useGetLectureById = (lectureId) => {
   const {data,isPending,isError}=useQuery({
-    queryKey:["lecture"],
+    queryKey:["lectureId"],
     queryFn:()=> functionToGetLecture(lectureId),
   })
   return {lecture:data?.data.lecture,isPending,isError}

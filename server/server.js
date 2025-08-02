@@ -11,10 +11,11 @@ const courseRouter = require("./routers/course.router");
 const mediaRouter = require("./routers/media.routes")
 const progressRouter = require("./routers/courseProgress.routes")
 const commentRouter = require("./routers/commnet.routes")
+const feedBackRouter = require("./routers/feedback.router")
 
 dotenv.config();
 
-
+// process.env.cross_origin||
 
 app.use(express.json());
 app.use(cookieParser())
@@ -34,6 +35,7 @@ app.use("/course", courseRouter);
 app.use("/media", mediaRouter)
 app.use("/progress", progressRouter)
 app.use("/comment", commentRouter)
+app.use("/feedback", feedBackRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

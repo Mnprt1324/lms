@@ -14,7 +14,7 @@ export function SheetDemo() {
   const navItems = [
     { icon: <House size={20} />, label: "Home", to: "/" },
     { icon: <NotebookTabs size={20} />, label: "Courses", to: "/courses" },
-    { icon: <UserPen size={20} />, label: "Teachers", to: "/teachers" },
+    { icon: <UserPen size={20} />, label: "Teachers", to: "/instructor" },
     { icon: <Building2 size={20} />, label: "About Us", to: "/about" },
   ];
 

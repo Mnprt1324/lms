@@ -17,7 +17,6 @@ import { userLoggedOut } from "../features/userSlice";
 
 export const DropdownMenu2 = () => {
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
   const dispatch = useDispatch();
   const { mutate } = useMutation({
     mutationFn: functionToLogout,

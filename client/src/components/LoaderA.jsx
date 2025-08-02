@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const LoaderA = () => {
   return (
-     <div className="flex items-center justify-center w-full h-screen bg-blue-500">
+     <div className="flex items-center justify-center w-full h-screen">
     <StyledWrapper>
       <div className="three-body">
         <div className="three-body__dot" />
@@ -19,7 +19,7 @@ const StyledWrapper = styled.div`
   .three-body {
    --uib-size: 60px;
    --uib-speed: 0.8s;
-   --uib-color:white;
+   --uib-color:#5567FF;
    position: relative;
    display: inline-block;
    height: var(--uib-size);

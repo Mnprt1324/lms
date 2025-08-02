@@ -17,6 +17,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Lecture } from "./Lecture";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
+import { LoaderA } from "@/components/LoaderA";
 
 export const CreateLecture = () => {
   const { courseId } = useParams();
@@ -49,6 +50,8 @@ export const CreateLecture = () => {
     queryKey: [createLecture.isPending],
     queryFn: () => functionToGetLectures(courseId),
   });
+      
+ if(isPending) return <LoaderA/>    
   return (
     <div className="flex md:mx-10 flex-col">
       <div className="mb-5 flex gap-5 items-center">

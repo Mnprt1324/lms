@@ -4,11 +4,11 @@ import { CourseCard } from "./CourseCard";
 export const MyLearning = () => {
   const isLoading = false;
    const user = useSelector((state) => state.auth.user);
-   console.log(user)
+  
   return (
     <div className="max-w-4xl mx-auto my-10 px-4 md:px-0">
       <h1 className="text-2xl font-bold"> MyLearning</h1>
-      <div className="my-5">{isLoading ? <MyLearningSkeleton /> :(
+      <div className="my-5">{!user ? <MyLearningSkeleton /> :(
        <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
          {
          user.enrollCourses.map((course,index)=>(

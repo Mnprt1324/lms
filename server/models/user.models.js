@@ -13,7 +13,6 @@ const userSchema = mongoose.Schema({
         unique: true,
         lowercase: true,
     },
-
     password: {
         type: String,
         required: true,
@@ -24,17 +23,17 @@ const userSchema = mongoose.Schema({
         enum: ['student', 'instructor', 'admin'],
         default: 'student',
     },
-    enrollCourses:[{
-     type:mongoose.Schema.Types.ObjectId,
-     ref:'Course'
+    enrollCourses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
     }],
 
     bio: String,
-    avatar:{
-        type:String,
-        default:""
+    avatar: {
+        type: String,
+        default: ""
     },
 }, { timestamps: true })
 
-const user=mongoose.model("Users",userSchema);
-module.exports=user;
+const user = mongoose.model("Users", userSchema);
+module.exports = user;

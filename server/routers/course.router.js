@@ -26,7 +26,7 @@ router.put("/:courseId",isAuthenticate,lectureControllers.togglePublishCourse);
 router.post("/payment/create-order",isAuthenticate,coursePayControllers.createOrder);
 router.post("/:courseId/payment/verify",isAuthenticate,coursePayControllers.verifyPayment);
 router.put("/payment/update",isAuthenticate,coursePayControllers.updatePurchaseCourse)
-
+router.get("/purchased/aa",isAuthenticate,coursePayControllers.getAllPurchasedCourse);
 
 
 module.exports=router;

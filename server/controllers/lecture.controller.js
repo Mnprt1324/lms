@@ -58,7 +58,7 @@ module.exports.getLectureById = async (req, res) => {
         const { lectureId } = req.params;
         const lecture = await Lecture.findById(lectureId).populate({
             path: "comments",
-            populate: { path: "userId", select: "name avatar" }
+            populate: { path: "userId",model:"Users", select: "name avatar" }
         });;
         if (!lecture) {
             return res.status(404).json({ message: "Lecture not found!" });

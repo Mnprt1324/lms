@@ -30,8 +30,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
+import { LoaderA } from "@/components/LoaderA";
 export const Profile = () => {
   const user = useSelector((state) => state.auth.user);
+  if(!user) return <LoaderA/>
   return (
     <div className="max-w-5xl mx-auto my-10 px-4 md:px-6">
       {/* Profile Heading */}
@@ -45,7 +47,7 @@ export const Profile = () => {
   <div className="flex flex-col items-center">
     <Avatar className="h-24 w-24 md:h-32 md:w-32 shadow border border-gray-200">
       <AvatarImage
-        src={user?.avatar || "https://github.com/shadcn.png"}
+        src={user?.avatar ||"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
         alt="User Avatar"
       />
       <AvatarFallback className="text-lg font-semibold">

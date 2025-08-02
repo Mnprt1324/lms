@@ -14,18 +14,15 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Edit } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useGetCourse } from "@/hooks/useGetCourse";
+import { LoaderA } from "@/components/LoaderA";
 export const CouresTable = () => {
   const { isPending, isError } = useGetCourse();
   const navigate = useNavigate();
 
   const courses = useSelector((state) => state.course.courses);
   console.log(courses);
-  if (isPending)
-    return (
-      <>
-        <h1>loading...</h1>
-      </>
-    );
+  if (isPending) return <LoaderA/>
+
 
   return (
     <div>

@@ -3,6 +3,8 @@ const Course = require("../models/course.model");
 const CoursePurchase = require("../models/purchaseCourse")
 const crypto = require("crypto");
 const User = require("../models/user.models");
+const path = require("path");
+const { model } = require("mongoose");
 module.exports.createOrder = async (req, res) => {
     try {
 
@@ -85,7 +87,7 @@ module.exports.verifyPayment = async (req, res) => {
     try {
         const { courseId } = req.params;
         const userId = req.user;
-        const purchaseCours = await CoursePurchase.findOne({ userId,courseId, status: "completed" });
+        const purchaseCours = await CoursePurchase.findOne({ userId, courseId, status: "completed" });
         if (!purchaseCours) {
             return res.status(200).json({ success: false, message: "no purchase Course found" })
         }
@@ -102,5 +104,23 @@ module.exports.verifyPayment = async (req, res) => {
     } catch (error) {
         console.log("verifyPayment", error)
         return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+module.exports.getAllPurchasedCourse = async (req, res) => {
+    try {
+        const purchasedCourse = await CoursePurchase.find({
+            status: "completed",
+        }).populate({path:"courseId",model:"course" ,select:"courseTitle coursePrice"}).select("amount status");
+        if (!purchasedCourse) {
+            return res.status(404).json({
+                purchasedCourse: [],
+            });
+        }
+        return res.status(200).json({
+            purchasedCourse,
+        });
+    } catch (error) {
+        console.log("getAllPurchased hellocourse",error);
     }
 };
