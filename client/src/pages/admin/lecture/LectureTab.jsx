@@ -29,7 +29,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { useGetLectureById } from "../.././../../hooks/usegetLectureById";
+import { useGetLectureById } from "@/hooks/usegetLectureById";
 export const LectureTab = () => {
   const navigate=useNavigate();
   const { courseId, lectureId } = useParams();
