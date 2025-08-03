@@ -4,7 +4,8 @@ import { Courses } from './student/Courses'
 import { Feedback } from './home/Feedback'
 import { TopTeachers } from './home/TopTeachers'
 import { Accodian } from './home/Accodian'
-import { FeedbackSend } from './home/Feedbacksend'
+import { FeedbackSend } from './Home/FeedbackSend'
+
 
 export const Home = () => {
   
