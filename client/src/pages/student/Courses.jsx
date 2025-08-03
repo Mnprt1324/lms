@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 export const Courses = () => {
   const {isError,isPending}= useGetPublicCourse();
   const Allcourses=useSelector((state)=>state.course.allPublicCourse)
-  console.log(isError)
   return (
     <div className="bg-gray-50">
       <div className="max-w-7xl mx-auto">

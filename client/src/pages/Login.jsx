@@ -1,12 +1,7 @@
 // components/AuthTabs.jsx
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/components/ui/tabs"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Card,
   CardHeader,
@@ -14,7 +9,7 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Form,
   FormField,
@@ -22,28 +17,27 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { functionToLogin, functionToSignup } from "../API/api"
-import { useMutation } from "@tanstack/react-query"
-import { loginSchema, signupSchema } from "@/validation/userValidation"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { functionToLogin, functionToSignup } from "../API/api";
+import { useMutation } from "@tanstack/react-query";
+import { loginSchema, signupSchema } from "@/validation/userValidation";
 // import {toast} from '../components/ui/sonner'
-import { toast } from "sonner"
-import { useDispatch } from "react-redux"
-import { userLoggedIn } from "../features/userSlice"
-import {data, useNavigate} from "react-router-dom"
+import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { userLoggedIn } from "../features/userSlice";
+import { data, useNavigate } from "react-router-dom";
 export function Login() {
-
-  const navigate=useNavigate()
- const dispatch=useDispatch(); 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const loginForm = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
-  })
+  });
 
   const signupForm = useForm({
     resolver: zodResolver(signupSchema),
@@ -52,47 +46,46 @@ export function Login() {
       email: "",
       password: "",
     },
-  })
+  });
 
-  const onLoginSubmit =async (data) => {
+  const onLoginSubmit = async (data) => {
     loginMutation.mutate(data);
-  
-  }
+  };
 
-  const onSignupSubmit = async(data) => {
-     signupMutation.mutate(data);
-  }
+  const onSignupSubmit = async (data) => {
+    signupMutation.mutate(data);
+  };
 
   const loginMutation = useMutation({
-  mutationFn:functionToLogin,
-  onSuccess: (data) => {
-    if(!(data.data.error)){
-      dispatch(userLoggedIn(data.data.user))
-       navigate("/")
-      toast.error(data.data.message);
-    }
-    loginForm.reset();
-  },
-  onError: (error) => {
-    console.log(error.response.data.message)
-    toast.error(error.response.data.message ||error.response.data.errors[0]);
-    console.error("Login Error:", error);
-  },
-});
+    mutationFn: functionToLogin,
+    onSuccess: (data) => {
+      if (!data.data.error) {
+        dispatch(userLoggedIn(data.data.user));
+        navigate("/");
+        toast.success(data.data.message);
+      }
+      loginForm.reset();
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error(error.response.data.message || error.response.data.errors[0]);
+      console.error("Login Error:", error);
+    },
+  });
 
   const signupMutation = useMutation({
-  mutationFn: functionToSignup,
-  onSuccess: (data) => {
-    console.log("Signup Success:", data);
-      if(!(data.data.error)){
-      toast.success(data.data.message);
-    }
-    signupForm.reset();
-  },
-  onError: (error) => {
-    console.error("Signup Error:", error);
-  },
-});
+    mutationFn: functionToSignup,
+    onSuccess: (data) => {
+      console.log("Signup Success:", data);
+      if (!data.data.error) {
+        toast.success(data.data.message);
+      }
+      signupForm.reset();
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message || error.response.data.errors[0]);
+    },
+  });
 
   return (
     <div className="max-w-sm mx-auto mt-10">
@@ -119,7 +112,11 @@ export function Login() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="you@example.com" {...field} />
+                          <Input
+                            type="email"
+                            placeholder="you@example.com"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -133,7 +130,11 @@ export function Login() {
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="******" {...field} />
+                          <Input
+                            type="password"
+                            placeholder="******"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -181,7 +182,11 @@ export function Login() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="you@example.com" {...field} />
+                          <Input
+                            type="email"
+                            placeholder="you@example.com"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -195,7 +200,11 @@ export function Login() {
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="******" {...field} />
+                          <Input
+                            type="password"
+                            placeholder="******"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -213,5 +222,5 @@ export function Login() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

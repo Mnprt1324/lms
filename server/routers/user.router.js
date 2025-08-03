@@ -10,5 +10,5 @@ router.post("/login",userController.loginUser);
 router.post("/logout",userController.logOutUser);
 router.get("/getprofile",isAuthenticate,userController.getUserProfile);
 router.post("/update/profile",isAuthenticate,upload.single("profilePhoto"),userController.updateUserProfile)
-
+router.get("/instructor",userController.getAllInstructor);
 module.exports=router

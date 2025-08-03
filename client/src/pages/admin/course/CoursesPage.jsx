@@ -42,11 +42,6 @@ export const CoursesPage = () => {
     setSearchQuery(e.target.value);
   };
 
-  // Local filtering (client-side)
-  const displayedCourses = filteredCourse.filter((course) =>
-    course.title?.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
-  );
-
   return (
     <div className="min-h-screen w-full bg-gray-50 overflow-x-hidden">
       {/* Search */}

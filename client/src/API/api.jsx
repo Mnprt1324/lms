@@ -2,12 +2,10 @@ import axios from "axios";
 import { data } from "react-router-dom";
 
 const base = import.meta.env.VITE_BASE_URL;
-console.log(base);
 const api = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL:"http://localhost:4000",
 });
 
-console.log(import.meta.env.VITE_BASE_URL);
 export const functionToSignup = async (data) => {
   return await api.post("/user/register", data, { withCredentials: true });
 };
@@ -196,3 +194,7 @@ export const functionToGetFeedBack =async () => {
   const res=await api.get("/feedback/", { withCredentials: true });
   return res.data.allFeedBack;
 };
+
+export const functionTogetAllInstructor=async()=>{
+  return api.get("/user/instructor",{withCredentials:true});
+}

@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 export const About = () => {
   return (
     <>
@@ -37,12 +39,12 @@ export const About = () => {
           <p className="text-gray-600 mb-6 max-w-xl mx-auto">
             Whether you're a lifelong learner, a professional, or a passionate educator — there's a place for you at LSM. Let's grow together.
           </p>
-          <a
-            href="/courses"
+          <NavLink
+            to="/courses"
             className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition"
           >
             Get Started
-          </a>
+          </NavLink>
         </div>
       </div>
     </section>

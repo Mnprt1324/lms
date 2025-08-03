@@ -9,22 +9,28 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { functionToLogout } from "../API/api";
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { userLoggedOut } from "../features/userSlice";
+import { toast } from "sonner";
 
 export const DropdownMenu2 = () => {
+  const navigate=useNavigate();
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { mutate } = useMutation({
     mutationFn: functionToLogout,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      if(data.data.message){
       dispatch(userLoggedOut());
+       toast.success(data.data.message);
+      navigate("/login")
+      }
     },
     onError: (err) => {
-      console.log("logout Falied", err);
+        toast.error(err?.data.data.message||"somthing went wrong")     
     },
   });
   const handleLogOut = () => {

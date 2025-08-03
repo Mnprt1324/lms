@@ -20,6 +20,7 @@ import { CoursesPage } from "./pages/admin/course/CoursesPage";
 import { About } from "./pages/About";
 import { TeachersPage } from "./pages/TeachersPage";
 import { Error } from "./pages/home/Error";
+import { AdminRoutes, ProtectedRoutes } from "./components/ProtectedRoutes";
 
 function App() {
   useGetUserProfile();
@@ -39,11 +40,19 @@ function App() {
         },
         {
           path: "/mylearning",
-          element: <MyLearning />,
+          element: (
+            <ProtectedRoutes>
+              <MyLearning />
+            </ProtectedRoutes>
+          ),
         },
         {
           path: "/profile",
-          element: <Profile />,
+          element: (
+            <ProtectedRoutes>
+              <Profile />
+            </ProtectedRoutes>
+          ),
         },
         {
           path: "/courses",
@@ -58,12 +67,16 @@ function App() {
           element: <TeachersPage />,
         },
         {
-          path:"*",
-          element:<Error/>
+          path: "*",
+          element: <Error />,
         },
         {
           path: "/admin",
-          element: <SideBar />,
+          element: (
+            <AdminRoutes>
+              <SideBar />
+            </AdminRoutes>
+          ),
           children: [
             {
               path: "/admin/dashboard",
@@ -93,11 +106,20 @@ function App() {
         },
         {
           path: "/course/:courseId",
-          element: <CourseDetails />,
+          element: (
+            <ProtectedRoutes>
+              {" "}
+              <CourseDetails />
+            </ProtectedRoutes>
+          ),
         },
         {
           path: "/course/:courseId/progress",
-          element: <CourseProgress />,
+          element: (
+            <ProtectedRoutes> 
+              <CourseProgress />
+            </ProtectedRoutes>
+          ),
         },
       ],
     },

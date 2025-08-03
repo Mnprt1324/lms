@@ -11,9 +11,9 @@ export const useMarkIsComplete = () => {
     }
    },
    onError:(error)=>{
-     if(error.data){
-    toast.success(error.data.message||"something went wrong")
-     }
+    
+    toast.success(error?.response.data.message||"something went wrong")
+  
    }
   })
   return {ToggleComplete:mutate,isError,isFecthing:isPending}

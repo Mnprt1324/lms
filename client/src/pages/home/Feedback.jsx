@@ -32,7 +32,6 @@ export const Feedback = () => {
 
 function CarouselFeedback() {
     const { data, isPending } = useGetAllFeedBack();
-   console.log("feedback",data)
   return (
     <Carousel
       opts={{
@@ -69,7 +68,7 @@ function CarouselFeedback() {
                   <p className="flex gap-1 text-md text-gray-500 dark:text-gray-400">
                     {
                     [1,2,3,4,5].map((star,index)=>(
-                        <FaStar  className={star <= feedback.rating ? "text-yellow-400" : "text-gray-300"} />
+                        <FaStar  key={index} className={star <= feedback.rating ? "text-yellow-400" : "text-gray-300"} />
 
                     ))
 

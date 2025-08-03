@@ -11,12 +11,11 @@ export const useMakePayment = (courseId) => {
     try {
       // 1. Create order from backend
       const res = await functionToCreateOrder(courseId);
-      console.log(res);
       const newPurchase=res.data.newPurchase;
       const order = res.data.order;
 
       if (!order?.id) {
-        console.error("Invalid order object", order);
+          toast.error("something went wrong");
         return;
       }
 
@@ -31,14 +30,13 @@ export const useMakePayment = (courseId) => {
         handler: async (res) => {
           try {
             const response=await functionToPayUpdateStatus({...res,newPurchase});
-            console.log(response)
             if(response.data.message){
               toast.success(response.data.message);
             }
             navigate(`/course/${courseId}/progress`);
             // const resp = await functionToVerifyPayment({...res,newPurchase});
           } catch (error) {
-            console.log(error);
+           toast.error(error?.response.data.message || "something went wrong");
           }
         },
         prefill: {
@@ -55,7 +53,7 @@ export const useMakePayment = (courseId) => {
       const rzp = new Razorpay(options);
       rzp.open();
     } catch (err) {
-      console.error("Payment error", err);
+       toast.error(error?.response.data.message || "something went wrong");
     }
   };
 
