@@ -5,7 +5,6 @@ import { Feedback } from './home/Feedback'
 import { TopTeachers } from './home/TopTeachers'
 import { Accodian } from './home/Accodian'
 import { FeedbackSend } from './Home/FeedbackSend'
-import { FeedbackSend } from './home/FeedbackSend'
 
 
 export const Home = () => {
