@@ -19,7 +19,6 @@ module.exports.registerUser = async (req, res) => {
         }
         const { name, email, password } = value;
         const user = await User.findOne({ email })
-        console.log(user);
         if (user) {
             return res.status(404).json({ error: true, message: "User already exists" })
         }
@@ -55,7 +54,6 @@ module.exports.loginUser = async (req, res) => {
         const token = await genrateToken(user);
         res.cookie("token", token, {
             httpOnly: true,
-            sameSite: "strict",
             secure: true,
             maxAge: 1 * 24 * 60 * 60 * 1000
         });
@@ -73,7 +71,6 @@ module.exports.logOutUser = async (req, res) => {
         if (token) {
             res.clearCookie("token", {
                 httpOnly: true,
-                sameSite: "strict",
             });
             res.status(200).json({ error: false, message: "logout successfully" })
 
