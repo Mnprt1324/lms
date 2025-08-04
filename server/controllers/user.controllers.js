@@ -56,6 +56,7 @@ module.exports.loginUser = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             sameSite: "strict",
+            secure: true
             maxAge: 1 * 24 * 60 * 60 * 1000 // 1 days
         });
 
