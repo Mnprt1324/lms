@@ -20,7 +20,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
-  origin:'https://pie-lms.netlify.app',
+  origin:'https://lms-5531.vercel.app',
   credentials: true,
 }));
 connectToDB();
