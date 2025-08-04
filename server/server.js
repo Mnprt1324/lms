@@ -37,7 +37,9 @@ app.use("/progress", progressRouter)
 app.use("/comment", commentRouter)
 app.use("/feedback", feedBackRouter);
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
-  console.log(`server is listening at port :${port}`)
-})
+
+module.exports=app;
+// const port = process.env.PORT || 5000;
+// app.listen(port, () => {
+//   console.log(`server is listening at port :${port}`)
+// })

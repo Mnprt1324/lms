@@ -62,7 +62,7 @@ export const CourseProgress = () => {
       {
         onSuccess: () => {
           setCommentText("");
-          refetch(); // optional to get updated comments
+          refetch(); 
         },
       }
     );
