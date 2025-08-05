@@ -20,7 +20,11 @@ dotenv.config();
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
+<<<<<<< HEAD
   origin:'https://lms-5531.vercel.app',
+=======
+  origin:cross_origin,
+>>>>>>> 47cc405 (changes)
   credentials: true,
 }));
 connectToDB();

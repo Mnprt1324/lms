@@ -29,9 +29,10 @@ export const CoursesPage = () => {
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
 
   const filteredCourse = useSelector((state) => state.course.filteredCourse);
-
+  const imgUrl =
+    "https://static.uacdn.net/production/_next/static/images/error.svg?q=75&auto=format%2Ccompress&w=828";
   // Debounce logic
-  useEffect(() => {
+  const bgImgUrl = useEffect(() => {
     const timeout = setTimeout(() => {
       setDebouncedSearchQuery(searchQuery);
     }, 500);
@@ -45,12 +46,12 @@ export const CoursesPage = () => {
   return (
     <div className="min-h-screen w-full bg-gray-50 overflow-x-hidden">
       {/* Search */}
-      <div className="relative  bg-gradient-to-r from-[#5567FF] to-[#5567dF] dark:from-gray-800 dark:to-gray-900 py-24 px-4 text-center ">
+      <div className="relative  bg-[url('https://img.freepik.com/free-photo/cheerful-friendly-charismatic-redhead-woman-laughing-joyfully-texting-friends-chatting-with-smar_1258-139098.jpg?t=st=1754378104~exp=1754381704~hmac=40f140cc2ddb89ba022a70ad3ef3206240a387cbbaceb072e11060a2895e5c76&w=1380')] bg-cover dark:from-gray-800 dark:to-gray-900 py-24 px-4 text-center ">
         <div className="max-w-3xl mx-auto ">
           <h1 className="text-white text-4xl font-bold mb-4">
             Find best courses for You
           </h1>
-          <p className="text-gray-200 mb-8">
+          <p className="text-gray-black mb-8">
             All our dreams can come true, if we have the courage to pursue them.
           </p>
           <form className="flex items-center bg-white dark:bg-gray-800 rounded-full shadow-lg overflow-hidden max-w-xl mx-auto mb-6">
@@ -80,7 +81,7 @@ export const CoursesPage = () => {
             </Collapsible>
           </div>
           <div className="hidden bg-white md:block">
-                <CheckboxDemo searchQuery={searchQuery} />
+            <CheckboxDemo searchQuery={searchQuery} />
           </div>
         </aside>
 
@@ -95,8 +96,14 @@ export const CoursesPage = () => {
                 ))
               ) : filteredCourse.length === 0 ? (
                 // No course found case
-                <div className="col-span-full text-center py-10 text-gray-500 text-xl font-semibold">
-                  No Courses Found
+                <div className="flex flex-col items-center col-span-full text-center py-10 text-xl font-semibold">
+                  <div>
+                    <img src={imgUrl} alt="" />
+                  </div>
+                  <div className="font-bold text-3xl">
+                    Oops! No Course Found
+                  </div>
+               
                 </div>
               ) : (
                 // Render actual courses
@@ -108,8 +115,8 @@ export const CoursesPage = () => {
           </div>
         </main>
       </div>
-      <TopTeachers/>
-      <Accodian/>
+      <TopTeachers />
+      <Accodian />
     </div>
   );
 };

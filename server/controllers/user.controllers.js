@@ -54,8 +54,8 @@ module.exports.loginUser = async (req, res) => {
         const token = await genrateToken(user);
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
-            maxAge: 1 * 24 * 60 * 60 * 1000
+            sameSite: "strict",
+            maxAge: 1 * 24 * 60 * 60 * 1000 // 1 days
         });
 
         res.status(200).json({ error: false, message: "user login scussfully", token, user });

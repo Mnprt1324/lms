@@ -1,9 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -27,10 +22,10 @@ export const CourseDetails = () => {
   const course = useSelector((state) => state.course.singleCourse);
   const handlePayment = useMakePayment(courseId);
 
-  if (isPending) return <LoaderA />;
+  console.log(course);
+  if (isPending||!course) return <LoaderA />;
   if (error) return <div>Error loading course data</div>;
 
-  console.log(course.lectures);
   return (
     <div className="flex flex-col items-center bg-gray-50">
       {/* Hero Section */}
@@ -48,7 +43,10 @@ export const CourseDetails = () => {
                 Get Started
               </Button>
               <p className="flex items-center gap-1 text-lg">
-                <Button variant={"outline"} className={"text-black"} >  {course?.enrolledStudents?.length || 0 } Students</Button>
+                <Button variant={"outline"} className={"text-black"}>
+                  {" "}
+                  {course?.enrolledStudents?.length || 0} Students
+                </Button>
                 {/* <Badge>{course?.enrolledStudents?.length || 0 }  Students</Badge> */}
               </p>
             </div>
@@ -77,22 +75,30 @@ export const CourseDetails = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {course?.lectures?.map((lecture) => (
-                <div
-                  key={lecture._id}
-                  className="border-1 border-gray-300 hover:bg-slate-100 rounded-lg p-4 flex items-center gap-4 cursor-pointer transition-colors duration-300 
+              {course.lectures?.length === 0 ? (
+                <p className="text-center text-gray-500 text-sm">
+                  No lectures available.
+                </p>
+              ) : (
+                <>
+                  {course?.lectures?.map((lecture) => (
+                    <div
+                      key={lecture._id}
+                      className="border-1 border-gray-300 hover:bg-slate-100 rounded-lg p-4 flex items-center gap-4 cursor-pointer transition-colors duration-300 
                   sm:flex-row sm:p-2 sm:gap-2 lg:flex-row lg:p-4 lg:gap-4"
-                >
-                  {lecture.isPreviewFree ? (
-                    <FaRegCirclePlay className="text-xl" />
-                  ) : (
-                    <LockKeyhole className="text-sm" />
-                  )}
-                  <span className="font-semibold text-sm sm:text-base ">
-                    {lecture.lectureTitle}
-                  </span>
-                </div>
-              ))}
+                    >
+                      {lecture.isPreviewFree ? (
+                        <FaRegCirclePlay className="text-xl" />
+                      ) : (
+                        <LockKeyhole className="text-sm" />
+                      )}
+                      <span className="font-semibold text-sm sm:text-base ">
+                        {lecture?.lectureTitle}
+                      </span>
+                    </div>
+                  ))}
+                </>
+              )}
             </CardContent>
           </Card>
 
@@ -106,7 +112,7 @@ export const CourseDetails = () => {
                 Course Description
               </CollapsibleTrigger>
               <CollapsibleContent className="px-4 py-3 text-sm bg-white text-gray-700">
-                {course.description ||
+                {course?.description ||
                   "No description provided for this course."}
               </CollapsibleContent>
             </Collapsible>
@@ -152,11 +158,10 @@ export const CourseDetails = () => {
             <CardContent className="space-y-4 text-center ">
               <div className="w-full flex justify-center items-center">
                 <ReactPlayer
-                  src={course?.lectures[0]?.videoUrl}
+                  src={course?.lectures?.[0]?.videoUrl || ""}
                   controls={true}
                   width="100%"
                   height="180px"
-                
                 />
               </div>
               <h1 className="text-2xl  text-left  mt-4">
@@ -195,14 +200,10 @@ export const CourseDetails = () => {
             <div className="flex gap-10 w-full justify-around">
               <div>
                 <Avatar className="w-20 h-20 hover:scale-105 transition-transform duration-300">
-                  <AvatarImage
-                    src={
-                     "https://github.com/shadcn.png"
-                    }
-                  />
+                  <AvatarImage src={"https://github.com/shadcn.png"} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                 <p className="text-center">jashan</p>
+                <p className="text-center">jashan</p>
               </div>
               <div>
                 <Avatar className="w-20 h-20 hover:scale-105 transition-transform duration-300">

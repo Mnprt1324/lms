@@ -20,7 +20,11 @@ import { CoursesPage } from "./pages/admin/course/CoursesPage";
 import { About } from "./pages/About";
 import { TeachersPage } from "./pages/TeachersPage";
 import { Error } from "./pages/home/Error";
-import { AdminRoutes, ProtectedRoutes } from "./components/ProtectedRoutes";
+import {
+  AdminRoutes,
+  AuthenticateUser,
+  ProtectedRoutes,
+} from "./components/ProtectedRoutes";
 
 function App() {
   useGetUserProfile();
@@ -29,6 +33,7 @@ function App() {
     {
       path: "/",
       element: <AppLayout />,
+
       children: [
         {
           path: "/",
@@ -36,7 +41,11 @@ function App() {
         },
         {
           path: "/login",
-          element: <Login />,
+          element: (
+            <AuthenticateUser>
+              <Login />{" "}
+            </AuthenticateUser>
+          ),
         },
         {
           path: "/mylearning",
@@ -108,7 +117,6 @@ function App() {
           path: "/course/:courseId",
           element: (
             <ProtectedRoutes>
-              {" "}
               <CourseDetails />
             </ProtectedRoutes>
           ),
@@ -116,7 +124,7 @@ function App() {
         {
           path: "/course/:courseId/progress",
           element: (
-            <ProtectedRoutes> 
+            <ProtectedRoutes>
               <CourseProgress />
             </ProtectedRoutes>
           ),

@@ -4,7 +4,8 @@ import { Navigate } from "react-router-dom";
 
 export const ProtectedRoutes = ({ children }) => {
   const { isAuthenticate } = useSelector((state) => state.auth);
-  if (!isAuthenticate) {
+  const token=localStorage.getItem("token");
+  if (!isAuthenticate ||!token) {
     return <Navigate to={"/login"} />;
   }
 

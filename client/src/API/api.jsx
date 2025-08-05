@@ -1,9 +1,16 @@
 import axios from "axios";
-import { data } from "react-router-dom";
 
 const base = import.meta.env.VITE_BASE_URL;
 const api = axios.create({
-  baseURL:base
+  baseURL: base,
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export const functionToSignup = async (data) => {
@@ -190,11 +197,11 @@ export const funcTOGetAllPurchasedCourse = () => {
 export const functionToPostFeedBack = (data) => {
   return api.post("/feedback/", { data }, { withCredentials: true });
 };
-export const functionToGetFeedBack =async () => {
-  const res=await api.get("/feedback/", { withCredentials: true });
+export const functionToGetFeedBack = async () => {
+  const res = await api.get("/feedback/", { withCredentials: true });
   return res.data.allFeedBack;
 };
 
-export const functionTogetAllInstructor=async()=>{
-  return api.get("/user/instructor",{withCredentials:true});
-}
+export const functionTogetAllInstructor = async () => {
+  return api.get("/user/instructor", { withCredentials: true });
+};

@@ -100,7 +100,6 @@ export const Profile = () => {
 function Dialogbox() {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
   const form = useForm({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -111,7 +110,6 @@ function Dialogbox() {
   const profileUpdate = useMutation({
     mutationFn: functionToUpdateProfile,
     onSuccess: (data) => {
-      console.log(data);
       if (!data.data.error) {
         toast.success(data.data.message);
         form.reset();

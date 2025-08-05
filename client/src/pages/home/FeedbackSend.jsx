@@ -23,7 +23,7 @@ export const FeedbackSend = () => {
   };
 
   return (
-    <div className="flex-col w-full py-10 px-5 bg-gray-100 flex items-center justify-center">
+    <div className="flex-col w-full py-10 px-5 flex items-center  justify-center bg-[url('https://img.freepik.com/premium-vector/smiling-male-student-standing-portrait_1316704-57556.jpg?w=1380')] bg-cover ">
       <div className="flex flex-col mb-5 items-center justify-center">
         <h1 className="font-bold text-2xl">Feedback </h1>
         <div className="h-1 w-[100px] bg-blue-500"></div>
@@ -33,9 +33,9 @@ export const FeedbackSend = () => {
           Leave Feedback
         </h2>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 ">
           {/* Star Rating */}
-          <div className="flex justify-center gap-1">
+          <div className="flex justify-center gap-1 ">
             {[1, 2, 3, 4, 5].map((star) => (
               <button
                 type="button"
