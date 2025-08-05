@@ -15,16 +15,11 @@ const feedBackRouter = require("./routers/feedback.router")
 
 dotenv.config();
 
-// process.env.cross_origin||
 
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
-<<<<<<< HEAD
-  origin:'https://lms-5531.vercel.app',
-=======
-  origin:cross_origin,
->>>>>>> 47cc405 (changes)
+  origin:process.env.cross_origin,
   credentials: true,
 }));
 connectToDB();
