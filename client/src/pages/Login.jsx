@@ -69,7 +69,7 @@ export function Login() {
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
-      <div className="relative flex items-center justify-center bg-slate-100  overflow-hidden">
+      <div className="relative flex items-center justify-center bg-gradient-to-bl from-cyan-950 via-rose-200 to-blue-700 overflow-hidden">
         <div className="block absolute inset-0 z-0 md:hidden">
           <img
             src="/login.png"
@@ -79,24 +79,18 @@ export function Login() {
         </div>
 
         {/* Form Content */}
-        <div className="relative z-10 w-full max-w-md  backdrop-blur-md rounded-xl md:bg-white shadow-lg p-6">
+        <div className="mx-2 relative z-10 w-full max-w-md  backdrop-blur-3xl rounded-xl shadow-lg p-6">
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid grid-cols-2 w-full mb-4 border-0 rounded-lg overflow-hidden shadow-lg bg-transparent">
+            <TabsList className="grid grid-cols-2 w-full mb-4 border-0 rounded-lg overflow-hidden  bg-transparent">
               <TabsTrigger
                 value="signup"
-                className="text-sm font-medium py-2 transition-colors duration-200
-               data-[state=active]:bg-transparent md:data-[state=active]:bg-slate-100 
-               data-[state=active]:text-black cursor-pointer
-                focus:border focus:border-black md:focus:border-0 md:focus:border-black"
+                className="data-[state=active]:bg-transparent data-[state=active]:border-amber-500"
               >
                 Sign Up
               </TabsTrigger>
               <TabsTrigger
                 value="login"
-                className="text-sm font-medium py-2 transition-colors duration-200
-               data-[state=active]:bg-transparent md:data-[state=active]:bg-slate-100 
-               data-[state=active]:text-black cursor-pointer
-                focus:border focus:border-black md:focus:border-0 md:focus:border-black"
+                className="data-[state=active]:bg-transparent data-[state=active]:border-amber-500"
               >
                 Login
               </TabsTrigger>
@@ -106,7 +100,7 @@ export function Login() {
             <TabsContent value="login">
               <Form {...loginForm}>
                 <form onSubmit={loginForm.handleSubmit(onLoginSubmit)}>
-                  <Card className="shadow-none bg-transparent border-0 md:bg-white ">
+                  <Card className="shadow-none bg-transparent border-0  ">
                     <CardHeader>
                       <CardTitle>Login</CardTitle>
                       <CardDescription>Welcome back!</CardDescription>
@@ -122,7 +116,7 @@ export function Login() {
                               <Input
                                 type="email"
                                 placeholder="you@example.com"
-                                className=" border  border-[#555f4A] md:border focus:ring-0 focus:ring-blue-500"
+                                className=""
                                 {...field}
                               />
                             </FormControl>
@@ -140,6 +134,7 @@ export function Login() {
                               <Input
                                 type="password"
                                 placeholder="******"
+                                className=""
                                 {...field}
                               />
                             </FormControl>

@@ -22,11 +22,12 @@ import { TeachersPage } from "./pages/TeachersPage";
 import { Error } from "./pages/home/Error";
 import {
   AdminRoutes,
-  AuthenticateUser,
   ProtectedRoutes,
 } from "./components/ProtectedRoutes";
 
+
 function App() {
+
   useGetUserProfile();
 
   const router = createBrowserRouter([
@@ -42,9 +43,9 @@ function App() {
         {
           path: "/login",
           element: (
-            <AuthenticateUser>
-              <Login />{" "}
-            </AuthenticateUser>
+          
+              <Login />
+          
           ),
         },
         {

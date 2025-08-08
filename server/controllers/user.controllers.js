@@ -52,12 +52,6 @@ module.exports.loginUser = async (req, res) => {
             return res.status(404).json({ error: false, message: "invalid user or passoword" })
         }
         const token = await genrateToken(user);
-        res.cookie("token", token, {
-            httpOnly: true,
-            sameSite: "strict",
-            maxAge: 1 * 24 * 60 * 60 * 1000 // 1 days
-        });
-
         res.status(200).json({ error: false, message: "user login scussfully", token, user });
     } catch (error) {
         console.log("error in loginUser:", error);

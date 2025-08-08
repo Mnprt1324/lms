@@ -9,19 +9,19 @@ import { useDispatch, useSelector } from "react-redux";
 export const useGetUserProfile = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const token = Cookies.get("token");
-
+  const token = localStorage.getItem("token");
   const { isError, data, isSuccess, isPending } = useQuery({
     queryKey: ["user"],
-    queryFn: functionToGetProfile, 
-    retry: false
+    queryFn: functionToGetProfile,
+    retry: false,
+    enabled: !!token && !user,
   });
 
   useEffect(() => {
-    if (isSuccess && data && !user) {
+    if ((isSuccess && data && !user && token)) {
       dispatch(userLoggedIn(data.user));
     }
-  }, [isSuccess, data, user, dispatch]); 
+  }, [isSuccess, data, user, dispatch]);
 
   return { isError, data, isSuccess, isPending };
 };

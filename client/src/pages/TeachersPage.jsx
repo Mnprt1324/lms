@@ -7,7 +7,6 @@ import { LoaderA } from "@/components/LoaderA";
 
 export const TeachersPage = () => {
   const { isPending, error, instructor } = useGetInstructor();
-  console.log(instructor);
   if (isPending) return <LoaderA />;
   return (
     <div className="">

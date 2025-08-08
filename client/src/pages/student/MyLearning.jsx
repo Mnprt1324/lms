@@ -2,9 +2,7 @@ import { useSelector } from "react-redux";
 import { CourseCard } from "./CourseCard";
 
 export const MyLearning = () => {
-  const isLoading = false;
    const user = useSelector((state) => state.auth.user);
-  
   return (
     <div className="max-w-4xl mx-auto my-10 px-4 md:px-0">
       <h1 className="text-2xl font-bold"> MyLearning</h1>
