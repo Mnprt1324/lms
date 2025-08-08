@@ -26,7 +26,6 @@ export const DropdownMenu2 = () => {
     toast.success("Logged out successfully");
     navigate("/login");
   };
-  console.log("user form ",user)
 
   return (
     <DropdownMenu className="pointer-cursor">

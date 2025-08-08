@@ -70,13 +70,7 @@ export function Login() {
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
       <div className="relative flex items-center justify-center bg-gradient-to-bl from-cyan-950 via-rose-200 to-blue-700 overflow-hidden">
-        <div className="block absolute inset-0 z-0 md:hidden">
-          <img
-            src="/login.png"
-            alt="Background"
-            className="w-full h-full object-cover"
-          />
-        </div>
+        
 
         {/* Form Content */}
         <div className="mx-2 relative z-10 w-full max-w-md  backdrop-blur-3xl rounded-xl shadow-lg p-6">

@@ -16,7 +16,11 @@ export const useCheckPaymentVerify = (courseId) => {
       }
     },
     onError: (error) => {
-      toast.error(error.response.data.message || "something went wrong");
+        if(error.status===403){
+          navigate("/login")
+        }else{
+          toast.error(error.response.data.message || "something went wrong");
+        }
     },
   });
 
