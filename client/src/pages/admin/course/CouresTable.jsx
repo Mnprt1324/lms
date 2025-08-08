@@ -20,7 +20,6 @@ export const CouresTable = () => {
   const navigate = useNavigate();
 
   const courses = useSelector((state) => state.course.courses);
-  console.log(courses);
   if (isPending) return <LoaderA/>
 
 
