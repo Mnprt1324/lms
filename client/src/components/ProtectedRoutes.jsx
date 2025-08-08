@@ -1,11 +1,13 @@
-import { Children } from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
 export const ProtectedRoutes = ({ children }) => {
   const { isAuthenticate } = useSelector((state) => state.auth);
-  const token=localStorage.getItem("token");
-  if (!isAuthenticate ||!token) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  if (!isAuthenticate || !token) {
     return <Navigate to={"/login"} />;
   }
 
@@ -30,5 +32,5 @@ export const AdminRoutes = ({ children }) => {
     return <Navigate to={"/"} />;
   }
 
-  return children;  
+  return children;
 };
