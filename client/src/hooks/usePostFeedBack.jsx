@@ -11,7 +11,7 @@ export const usePostFeedBack = () => {
       }
     },
     onError: (err) => {
-      toast.error(error?.response.data.message || "something went Wrong");
+      toast.error(err?.response.data.message || "something went Wrong");
     },
   });
   return { isError, isPending, mutate,isSuccess };

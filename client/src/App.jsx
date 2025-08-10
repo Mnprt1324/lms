@@ -24,6 +24,7 @@ import {
   AdminRoutes,
   ProtectedRoutes,
 } from "./components/ProtectedRoutes";
+import ContactUs from "./pages/home/ContactUs";
 
 
 function App() {
@@ -59,9 +60,9 @@ function App() {
         {
           path: "/profile",
           element: (
-            <ProtectedRoutes>
+         
               <Profile />
-            </ProtectedRoutes>
+    
           ),
         },
         {
@@ -79,6 +80,10 @@ function App() {
         {
           path: "*",
           element: <Error />,
+        },
+        {
+          path:"/contact",
+          element:<ContactUs/>
         },
         {
           path: "/admin",

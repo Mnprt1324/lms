@@ -71,7 +71,7 @@ export const CourseCard = ({ course }) => {
           </p>
         </div>
         <div>
-          <Button variant={"outline"}>View</Button>
+          <Button >View</Button>
         </div>
       </CardFooter>
     </Card>

@@ -1,5 +1,5 @@
 const { config } = require("dotenv");
-
+const streamifier = require("streamifier");
 const cloudinary = require("cloudinary").v2;
 config();
 cloudinary.config({
@@ -8,17 +8,29 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
-module.exports.uploadMedia=async(file)=>{
-try {
-      const uploadResponse=await cloudinary.uploader.upload(file,{
-        resource_type:"auto",
-      })
-   return uploadResponse;
-} catch (error) {
-     console.log("uploadMedia",error);
+module.exports.uploadMedia = async (fileBuffer) => {
+  try {
+    console.log("Uploading file buffer...");
+    const uploadResponse = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { resource_type: "auto" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      streamifier.createReadStream(fileBuffer).pipe(stream);
+    });
 
-}
-} 
+    console.log(uploadResponse);
+    return uploadResponse;
+
+  } catch (error) {
+    console.error("uploadMedia error:", error);
+    throw error;
+  }
+};
+
 module.exports.deleteMediaFromCloudinary =async(publicId)=>{
 try {
       await cloudinary.uploader.destroy(publicId) 

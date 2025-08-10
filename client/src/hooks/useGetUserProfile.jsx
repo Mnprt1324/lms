@@ -11,17 +11,17 @@ export const useGetUserProfile = () => {
   const user = useSelector((state) => state.auth.user);
   const token = localStorage.getItem("token");
   const { isError, data, isSuccess, isPending } = useQuery({
-    queryKey: ["user"],
+    queryKey: [user],
     queryFn: functionToGetProfile,
     retry: false,
     enabled: !!token && !user,
   });
 
   useEffect(() => {
-    if ((isSuccess && data && !user && token)) {
+    if ((isSuccess)) {
       dispatch(userLoggedIn(data.user));
     }
-  }, [isSuccess, data, user, dispatch]);
+  }, [isSuccess]);
 
   return { isError, data, isSuccess, isPending };
 };

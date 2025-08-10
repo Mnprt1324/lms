@@ -37,8 +37,8 @@ app.use("/comment", commentRouter)
 app.use("/feedback", feedBackRouter);
 
 
-// module.exports=app;
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
-  console.log(`server is listening at port :${port}`)
-})
+module.exports=app;
+// const port = process.env.PORT || 5000;
+// app.listen(port, () => {
+//   console.log(`server is listening at port :${port}`)
+// })

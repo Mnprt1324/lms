@@ -106,7 +106,6 @@ module.exports.updateUserProfile = async (req, res) => {
         const userId = req.user;
         const { name } = req.body;
         const profilePhoto = req.file;
-
         const user = User.findById(userId)
         if (!user) {
             return res.status(404).json({ message: "user not Found" });
@@ -116,7 +115,8 @@ module.exports.updateUserProfile = async (req, res) => {
             deleteMediaFromCloudinary(publicId);
         }
 
-        const cloudResponse = await uploadMedia(profilePhoto.path);
+        const cloudResponse = await uploadMedia(profilePhoto.buffer);
+        console.log(cloudResponse);
         const photoUrl = cloudResponse.secure_url;
         const updateData = {
             name,
